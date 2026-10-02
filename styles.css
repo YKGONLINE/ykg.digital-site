@@ -18,11 +18,11 @@
 
 /* Açılış filminin Anlatı başlıkları; diğer metinler Manrope olarak kalır. */
 @font-face {
-  font-family: "Space Grotesk";
+  font-family: "Sora";
   font-style: normal;
   font-display: swap;
-  font-weight: 300 700;
-  src: url(assets/fonts/space-grotesk-wght.ttf) format("truetype");
+  font-weight: 100 800;
+  src: url(assets/fonts/sora-wght.ttf) format("truetype");
 }
 
 :root {
@@ -554,11 +554,11 @@ html.webgl .captions { display: block; }
   transform: translateY(8px);
   text-align: left;
   color: #fff;
-  font-family: "Space Grotesk", "Manrope", sans-serif;
+  font-family: "Sora", "Manrope", sans-serif;
   font-synthesis: none;
   font-size: clamp(64px, 11vw, 158px);
   font-weight: 400;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.045em;
   line-height: 1.06;
   opacity: 0;
   will-change: opacity, transform;
