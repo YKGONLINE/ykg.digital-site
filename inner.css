@@ -1,0 +1,104 @@
+.inner-page { min-height: 100vh; background: transparent; display: flex; flex-direction: column; }
+.inner-page .sky { opacity: 1; }
+.inner-header {
+  min-height: 72px;
+  padding: 16px max(16px, env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(242, 242, 242, 0.1);
+}
+.inner-brand { display: inline-flex; align-items: center; gap: 9px; }
+.inner-brand img { display: block; }
+.inner-nav { color: var(--fg); text-decoration: none; font-size: 13px; }
+.inner-nav:hover, .inner-kicker a:hover, .inner-next a:hover { color: var(--muted); }
+.inner-page .inner-site-header {
+  position: relative;
+  height: 72px;
+  padding: 16px max(16px, env(safe-area-inset-right)) 16px max(16px, env(safe-area-inset-left));
+  border-bottom: 1px solid rgba(242, 242, 242, 0.1);
+  pointer-events: auto;
+}
+.inner-page .inner-site-header::before { display: none; }
+.inner-page .brand img { display: block; }
+.inner-page .brand-word { opacity: 1; }
+.inner-main { width: min(100% - 32px, 760px); margin: 0 auto; padding: clamp(52px, 10vw, 120px) 0 120px; flex: 1; }
+.inner-kicker { margin: 0 0 24px; color: var(--muted); font-size: 12px; }
+.inner-kicker a { color: var(--muted); text-decoration: none; }
+.inner-main h1 { margin: 0 0 48px; font-size: clamp(38px, 7vw, 68px); line-height: 1.1; font-weight: 500; letter-spacing: -0.04em; }
+.inner-copy { max-width: 650px; }
+.inner-copy p { margin: 0 0 28px; color: #c6c6c6; font-size: clamp(17px, 2vw, 20px); line-height: 1.7; }
+.inner-next { margin-top: 84px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+.inner-next span:first-child { color: var(--muted); font-size: 12px; }
+.inner-next a { color: var(--fg); text-decoration: none; font-size: clamp(22px, 4vw, 32px); }
+.inner-next a span { color: inherit; font-size: 0.8em; }
+
+/* Ne yapıyoruz iç sayfası */
+.work-page .inner-main { padding-bottom: clamp(72px, 12vw, 144px); }
+.work-page .inner-main h1 { margin-bottom: 24px; }
+.work-intro { max-width: 700px; margin: 0 0 clamp(64px, 10vw, 112px); color: #c6c6c6; font-size: clamp(18px, 2.3vw, 22px); line-height: 1.7; }
+.work-section { display: grid; grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1.2fr); gap: clamp(28px, 6vw, 72px); padding: 36px 0 44px; border-top: 1px solid var(--line); scroll-margin-top: 32px; }
+.work-diagram { align-self: start; padding-top: 9px; }
+.work-diagram svg { display: block; width: 100%; height: 32px; overflow: visible; }
+.work-diagram path { fill: none; stroke: rgba(242,242,242,.3); stroke-width: 1; }
+.work-diagram circle { fill: #c6c6c6; }
+.work-diagram-labels { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+.work-diagram-labels span { max-width: 33%; }
+.work-diagram-labels span:nth-child(2) { text-align: center; }
+.work-diagram-labels span:last-child { text-align: right; }
+.brand-scene-wrap { position: relative; width: 100%; aspect-ratio: 18 / 11; }
+.work-section .brand-diagram { align-self: center; padding-top: 0; }
+.brand-diagram .brand-scene { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.brand-diagram .brand-scene[hidden] { display: none; }
+.brand-diagram .brand-scene-fallback { position: absolute; top: 50%; transform: translateY(-50%); }
+.brand-diagram.has-animation .brand-scene-fallback { display: none; }
+.brand-diagram .work-diagram-labels { margin-top: 4px; }
+.product-scene-wrap { position: relative; width: 100%; aspect-ratio: 18 / 11; }
+.work-section .product-diagram { align-self: center; padding-top: 0; }
+.product-diagram .product-scene { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.product-diagram .product-scene[hidden] { display: none; }
+.product-diagram .product-scene-fallback { position: absolute; top: 50%; transform: translateY(-50%); }
+.product-diagram.has-animation .product-scene-fallback { display: none; }
+.product-diagram .work-diagram-labels { margin-top: 4px; }
+.workflow-scene-wrap { position: relative; width: 100%; aspect-ratio: 18 / 11; }
+.work-section .workflow-diagram { align-self: center; padding-top: 0; }
+.workflow-diagram .workflow-scene { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.workflow-diagram .workflow-scene[hidden] { display: none; }
+.workflow-diagram .workflow-scene-fallback { position: absolute; top: 50%; transform: translateY(-50%); }
+.workflow-diagram.has-animation .workflow-scene-fallback { display: none; }
+.workflow-diagram .work-diagram-labels { margin-top: 4px; }
+.workflow-description { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.work-section-copy h2 { margin: 0 0 18px; font-size: clamp(23px, 3.5vw, 32px); font-weight: 500; line-height: 1.25; letter-spacing: -0.025em; }
+.work-section-copy > p { margin: 0 0 24px; color: #c6c6c6; font-size: 16px; line-height: 1.75; }
+.work-section-copy .work-scope { margin: 0; color: var(--fg); font-size: 14px; line-height: 1.6; }
+.work-scope span { display: block; margin-bottom: 7px; color: var(--muted); font-size: 11px; }
+.work-contact { margin: 64px 0 0; padding-top: 24px; border-top: 1px solid var(--line); }
+.work-contact a { color: var(--fg); font-size: clamp(22px, 4vw, 32px); text-decoration: none; }
+.work-contact a:hover { color: var(--muted); }
+@media (max-width: 640px) {
+  .work-section { grid-template-columns: 1fr; gap: 28px; padding: 30px 0 36px; }
+  .work-diagram { max-width: 420px; width: 100%; }
+  .work-intro { margin-bottom: 56px; }
+}
+
+/* Ne yapıyoruz and SAPIENS diagrams use compact, stable SVG coordinates. */
+.work-diagram svg, .sapiens-process svg { height: auto; aspect-ratio: 10 / 1; }
+.work-diagram path, .sapiens-process path { vector-effect: non-scaling-stroke; stroke-width: 1.5; }
+.work-diagram circle, .sapiens-process circle { vector-effect: non-scaling-stroke; }
+.sapiens-page .inner-main { padding-bottom: clamp(72px, 12vw, 144px); }
+.sapiens-page .inner-main h1 { margin-bottom: 18px; }
+.sapiens-tagline { margin: 0 0 22px; color: var(--fg); font-size: clamp(20px, 3vw, 26px); line-height: 1.45; }
+.sapiens-intro { max-width: 700px; margin: 0 0 clamp(44px, 8vw, 76px); color: #c6c6c6; font-size: clamp(17px, 2vw, 20px); line-height: 1.7; }
+.sapiens-process { margin: 0 0 clamp(48px, 8vw, 76px); }
+.sapiens-process svg { display: block; width: 100%; max-width: 480px; overflow: visible; }
+.sapiens-process path { fill: none; stroke: rgba(242,242,242,.3); }
+.sapiens-process circle { fill: #c6c6c6; }
+.sapiens-process circle:nth-of-type(3) { r: 4; fill: var(--fg); }
+.sapiens-process-labels { max-width: 480px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; color: var(--muted); font-size: 12px; line-height: 1.4; text-align: center; }
+.sapiens-process-labels span:first-child { text-align: left; }
+.sapiens-process-labels span:last-child { text-align: right; }
+.sapiens-process-labels span:nth-child(3) { color: var(--fg); font-weight: 600; }
+.sapiens-section { padding: 28px 0 32px; border-top: 1px solid var(--line); }
+.sapiens-section h2 { margin: 0 0 14px; font-size: clamp(22px, 3vw, 28px); font-weight: 500; line-height: 1.3; letter-spacing: -0.025em; }
+.sapiens-section p { max-width: 680px; margin: 0; color: #c6c6c6; font-size: 16px; line-height: 1.75; }
+.sapiens-closing { margin: 32px 0 0; color: var(--fg); font-size: 17px; line-height: 1.6; }

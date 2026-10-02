@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index, follow">
+<title>Atlas — Gizlilik Politikası | YKG Digital</title>
+<style>
+  :root { --bg:#ffffff; --fg:#1a1a1a; --muted:#555; --line:#e5e5e5; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--fg);
+         max-width:720px; margin:0 auto; padding:32px 20px 64px; line-height:1.65; }
+  h1 { font-size:1.6rem; margin-bottom:4px; }
+  .updated { color:var(--muted); font-size:.9rem; margin-bottom:32px; }
+  h2 { font-size:1.1rem; margin-top:32px; margin-bottom:8px; }
+  ul { padding-left:22px; margin:8px 0; }
+  li { margin:6px 0; }
+  a { color:inherit; }
+  footer { margin-top:48px; border-top:1px solid var(--line); padding-top:16px; color:var(--muted); font-size:.85rem; }
+</style>
+</head>
+<body>
+<h1>Atlas Gizlilik Politikası</h1>
+<p class="updated">Son güncelleme: 2026-08-29</p>
+<h2>1. KAPSAM VE HEDEF KİTLE</h2>
+<p>Bu politika, Atlas mobil uygulamasının (Android) topladığı, işlediği ve</p>
+<p>sakladığı verileri açıklar. Atlas, emlak ofisleri ve danışmanları için</p>
+<p>geliştirilmiş bir iş takip ve iletişim aracıdır. Uygulama 18 yaş ve</p>
+<p>üzeri kullanıcılar için tasarlanmıştır; 18 yaşından küçük kişilerin</p>
+<p>kullanımına yönelik değildir.</p>
+<h2>2. VERİ SORUMLUSU VE İLETİŞİM</h2>
+<p>Veri Sorumlusu: Yusuf Kaan Gültaş (ykg.digital)</p>
+<p>Destek / veri talepleri: destek@ykg.digital</p>
+<h2>3. TOPLADIĞIMIZ VERİLER</h2>
+<p>3.1 Kimlik ve Hesap Verileri</p>
+<ul>
+<li>E-posta adresi: hesap girişi ve davet kabulü için toplanır.</li>
+<li>Şifre: yalnızca iletim anında işlenir; sunucuda geri döndürülemez bir</li>
+</ul>
+<p>özet (PBKDF2-HMAC-SHA256, tuzlanmış) olarak saklanır. Okunabilir</p>
+<p>biçimde saklanmaz.</p>
+<ul>
+<li>Hesap/rol kimlikleri (kullanıcı, çalışma alanı, ofis, rol bilgisi):</li>
+</ul>
+<p>yetkilendirme ve kiracı ayrımı için kullanılır.</p>
+<p>3.2 Cihaz ve Oturum Bilgileri</p>
+<ul>
+<li>Uygulama tarafından üretilen bir cihaz tanımlayıcısı (device_id):</li>
+</ul>
+<p>cihazı hesap oturumuna bağlamak için kullanılır. Bu, Android Reklam</p>
+<p>Kimliği (AAID) veya benzeri bir reklam tanımlayıcısı değildir.</p>
+<ul>
+<li>Oturum jetonu: girişten sonra API isteklerini doğrulamak için</li>
+</ul>
+<p>kullanılır; sunucuda yalnızca özeti (hash) tutulur.</p>
+<ul>
+<li>Hatırlatıcı bildirimleri, cihazda yerel olarak kullanıcı/çalışma alanı</li>
+</ul>
+<p>kimliğini ve hatırlatıcı içeriğini taşır; bu veriler cihazdan</p>
+<p>çıkmadan yerel bildirim sistemine iletilir.</p>
+<p>3.3 Kullanıcı İçeriği</p>
+<ul>
+<li>Uygulama içi mesajlaşma (asistanla konuşma metni).</li>
+<li>Not, liste/görev, portföy ve takip kayıtları.</li>
+<li>Lead (potansiyel müşteri) kayıtları: ad, iletişim bilgisi, ihtiyaç,</li>
+</ul>
+<p>bölge, bütçe gibi alanlar içerebilir. Bu alanlar çoğunlukla</p>
+<p>uygulamayı kullanan kişi değil, onun görüştüğü üçüncü kişilere</p>
+<p>(emlak müşterisi adayı) ait olabilir; bu veriler uygulama kullanıcısı</p>
+<p>tarafından girilir ve aynı saklama/silme kurallarına tabidir.</p>
+<ul>
+<li>Uygulama içi arama sorguları.</li>
+</ul>
+<p>3.4 Toplamadığımız Veriler</p>
+<p>Uygulama; konum (GPS), telefon rehberi, fotoğraf/video, mikrofon</p>
+<p>kaydı, takvim, ödeme bilgisi, reklam kimliği, üçüncü taraf analitik</p>
+<p>veya çökme raporlama SDK&#x27;sı kullanmaz ve bunları toplamaz. Uygulamada</p>
+<p>reklam bulunmaz.</p>
+<h2>4. YAPAY ZEKA İŞLEME VE ÜÇÜNCÜ TARAF PAYLAŞIMI</h2>
+<p>Atlas&#x27;ın asistan özelliği, sistem yapılandırmasına bağlı olarak iki</p>
+<p>farklı işleme rejiminden birini kullanır:</p>
+<p>4.1 Yerel/yerinde model rejimi</p>
+<p>Bu rejimde konuşma mesajlarınız ve uygulama içeriğiniz, işletmenizin</p>
+<p>kendi sunucu ortamı içinde işlenir; bulut tabanlı bir üçüncü taraf</p>
+<p>yapay zeka sağlayıcısına gönderilmez.</p>
+<p>4.2 OpenAI rejimi (koşullu)</p>
+<p>İşletmenizin sistem yapılandırması bu seçeneği etkinleştirdiğinde,</p>
+<p>konuşma mesajlarınız (son mesajlar ve varsa konuşma özeti) işlenmek</p>
+<p>üzere OpenAI&#x27;nin API&#x27;sine gönderilir. Gönderim öncesinde, bilinen bazı</p>
+<p>kişisel alanlar (ör. not/lead/portföy/takip kayıtlarındaki tanımlayıcı</p>
+<p>bilgiler) maskelenmeye çalışılır; ancak bu maskeleme, birden fazla</p>
+<p>alanın birleşiminden (ör. semt ve meslek bilgisinin birlikte</p>
+<p>kullanılması) oluşan dolaylı tanımlamaları tamamen ortadan</p>
+<p>kaldırmayabilir. Bu rejim etkinken işlenen veriler için OpenAI&#x27;nin</p>
+<p>kendi gizlilik ve veri saklama koşulları geçerlidir.</p>
+<p>Hangi rejimin sizin hesabınızda etkin olduğu bilgisi işletmenizin</p>
+<p>sistem yöneticisinden öğrenilebilir.</p>
+<h2>5. SAKLAMA SÜRELERİ</h2>
+<ul>
+<li>Oturum jetonu: en fazla 12 saat; süre dolduğunda veya oturum</li>
+</ul>
+<p>kapatıldığında geçersiz olur.</p>
+<ul>
+<li>Konuşma mesajları: her kullanıcı için en fazla son 100 mesaj</li>
+</ul>
+<p>saklanır; yeni mesajlar eklendikçe en eski mesajlar kayıttan</p>
+<p>düşürülür.</p>
+<ul>
+<li>Kimlik verileri (e-posta, şifre özeti) ve iş kayıtları (not, lead,</li>
+</ul>
+<p>portföy, takip): hesap veya kayıt silme talebiniz işlenene kadar</p>
+<p>saklanır. Bugün otomatik bir süre sonu silme mekanizması</p>
+<p>bulunmamaktadır; kayıtların &quot;arşivlenmesi&quot; bu kayıtların kalıcı</p>
+<p>olarak silindiği anlamına gelmez.</p>
+<h2>6. VERİLERİNİZİN SİLİNMESİ</h2>
+<p>Kimlik, hesap veya kullanıcı içeriği verilerinizin silinmesini talep</p>
+<p>edebilirsiniz:</p>
+<ul>
+<li>E-posta ile: destek@ykg.digital adresine talebinizi iletebilirsiniz.</li>
+</ul>
+<p>Talebiniz makul bir süre içinde değerlendirilir ve tarafınıza</p>
+<p>bilgi verilir.</p>
+<p>Oturum kapatma işlemi yalnızca o oturumu sonlandırır; hesabınızı veya</p>
+<p>kayıtlı verilerinizi silmez.</p>
+<h2>7. VERİ GÜVENLİĞİ</h2>
+<p>Cihaz ile sunucu arasındaki iletişim şifrelenir (HTTPS). Şifreler düz</p>
+<p>metin olarak saklanmaz; sunucu tarafında yalnızca tuzlanmış özetleri</p>
+<p>tutulur. Sunucu tarafındaki kimlik ve oturum kayıt dosyalarına erişim</p>
+<p>işletim sistemi düzeyinde kısıtlanmıştır.</p>
+<h2>8. REKLAM VE ANALİTİK</h2>
+<p>Atlas&#x27;ta reklam gösterilmez, reklam ağı kullanılmaz ve reklam kimliği</p>
+<p>(AD_ID) toplanmaz. Uygulama, kullanıcı davranışını izleyen üçüncü</p>
+<p>taraf analitik veya pazarlama SDK&#x27;sı içermez.</p>
+<h2>9. OTOMATİK DEĞERLENDİRME SÜREÇLERİ</h2>
+<p>Uygulama içindeki değerlendirme/inceleme süreçleri, kullanıcı</p>
+<p>davranışına göre kendini uyarlayan bir yapay zeka modeline dayanmaz;</p>
+<p>bu süreçler devre dışı bırakılmıştır veya sabit kurallara dayalı</p>
+<p>(deterministik) şekilde çalışır.</p>
+<h2>10. YAŞ SINIRI</h2>
+<p>Atlas, 18 yaş ve üzeri profesyonel kullanıcılar için tasarlanmıştır.</p>
+<p>Uygulamanın 18 yaşından küçük kişiler tarafından kullanılması</p>
+<p>amaçlanmamıştır.</p>
+<h2>11. POLİTİKA DEĞİŞİKLİKLERİ</h2>
+<p>Bu politika güncellendiğinde, güncel sürüm bu sayfada yayımlanır ve</p>
+<p>sayfanın üst kısmındaki &quot;son güncelleme&quot; tarihi değiştirilir.</p>
+<h2>12. İLETİŞİM</h2>
+<p>Sorularınız için: destek@ykg.digital</p>
+<footer>YKG Digital · <a href="mailto:destek@ykg.digital">destek@ykg.digital</a> · <a href="/">ykg.digital</a></footer>
+</body>
+</html>

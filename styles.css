@@ -1,0 +1,606 @@
+/* Metin yazı tipi: Manrope (OFL), siteyle birlikte sunulur. Türkçe harfler (ş, ğ, İ) latin-ext dosyasında. */
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url(assets/fonts/manrope-latin-wght-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url(assets/fonts/manrope-latin-ext-wght-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Açılış filminin Anlatı başlıkları; diğer metinler Manrope olarak kalır. */
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url(assets/fonts/space-grotesk-wght.ttf) format("truetype");
+}
+
+:root {
+  --bg: #000;
+  --bg-2: #050505;
+  --fg: #f2f2f2;
+  --muted: #a3a3a3;
+  --line: rgba(242, 242, 242, 0.22);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  color: var(--fg);
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+html { background: var(--bg); }
+/* body saydam: arkasındaki yıldız katmanı (.sky) görünsün. */
+body { overflow-x: hidden; }
+
+/* Film sonrası arka plan: filmin sonundaki uzay sönük yıldızlarla sürer (js/site.js çizer).
+   Film sırasında görünmez; logo başlığa geçerken belirir. */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+}
+html.no-film .sky { opacity: 1; }
+html.webgl .hero { background: transparent; }
+
+/* Film: uzun bir kaydırma alanı, içinde ekrana sabitlenmiş sahne. */
+.film {
+  position: relative;
+  height: calc(var(--screens, 6) * 100vh);
+  height: calc(var(--screens, 6) * 100svh);
+}
+
+html:not(.webgl) .film { height: auto; }
+
+.hero {
+  position: sticky;
+  top: 0;
+  /* Adres çubuğu gizlenince de ekranı doldursun (alta siyah şerit kalmasın). Çubuk görünürken
+     sahnenin altı çubuğun arkasında kalır; alttaki kontroller bu farkı --bar ile yukarı taşır. */
+  --bar: 0px;
+  height: 100vh;
+  height: 100lvh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(28px + env(safe-area-inset-bottom) + var(--bar));
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: opacity 0.6s ease;
+  display: none;
+}
+
+html.webgl .hint { display: block; }
+.hint.is-gone { opacity: 0; }
+
+.film-skip {
+  display: none;
+  position: absolute;
+  right: clamp(18px, 4vw, 56px);
+  bottom: calc(22px + env(safe-area-inset-bottom) + var(--bar));
+  z-index: 4;
+  min-height: 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border: 1px solid rgba(242, 242, 242, 0.24);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+html.film-skip-ready .film-skip { display: inline-flex; }
+.film-skip:hover, .film-skip:focus-visible {
+  color: var(--fg);
+  border-color: rgba(242, 242, 242, 0.64);
+  background: rgba(0, 0, 0, 0.72);
+}
+
+#stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+html.webgl #stage { display: block; }
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.fallback img { width: min(38vw, 220px); height: auto; }
+.fallback h1 { margin: 12px 0 0; font-size: clamp(24px, 4vw, 34px); font-weight: 600; letter-spacing: 0.01em; }
+/* Logo yazısı (Megrim'den üretilmiş SVG): "Y K G" ve altında "DıGıtal". */
+.lockup { margin: 16px 0 4px; line-height: 0; }
+.lockup img { display: block; height: clamp(44px, 6vw, 56px); width: auto; margin: 0 auto; }
+.fallback p { margin: 0; color: var(--muted); font-size: 16px; }
+
+/* Açılış: film mi yedek görünüm mü, karar verilene kadar ekran siyah kalır. Yedek görünüm yalnız
+   film açılamazsa (html.no-film) ya da JS yoksa görünür; içerik karar verilene kadar gizlidir. */
+html.js:not(.no-film) .fallback { display: none; }
+html.js:not(.webgl):not(.no-film) .content,
+html.js:not(.webgl):not(.no-film) .site-footer { visibility: hidden; }
+
+/* 12. sahne: gerçek logo + başlık, parçacık geyiğin üstüne süzülür. */
+.finale {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 16px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.webgl .finale { display: flex; }
+.finale.is-live { pointer-events: auto; }
+
+.finale img { width: min(52vw, 300px); height: auto; }
+.finale h1 { margin: 12px 0 0; font-size: clamp(24px, 4vw, 34px); font-weight: 600; letter-spacing: 0.01em; }
+.finale p { margin: 0; color: var(--muted); font-size: 16px; max-width: 440px; }
+.finale a {
+  margin-top: 8px;
+  color: var(--fg);
+  font-size: 14px;
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+}
+.finale a:hover { border-color: var(--fg); }
+
+button:focus-visible,
+a:focus-visible,
+.debug :focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+
+/* Yazı sütununun arkasında yıldızlar kısılır: harflerin yanına düşen yıldız noktalama gibi okunmasın. */
+.content {
+  background: linear-gradient(90deg,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0.72) max(16px, calc(50% - 440px)),
+    rgba(0, 0, 0, 0.72) min(calc(100% - 16px), calc(50% + 440px)),
+    rgba(0, 0, 0, 0) 100%);
+}
+.content { padding: 64px 0 120px; }
+
+.company {
+  padding: 56px 16px;
+  max-width: 760px;
+  margin: 0 auto;
+  scroll-margin-top: 72px;
+}
+
+.company h2 { font-size: 24px; font-weight: 600; margin: 0 0 16px; }
+.company p { color: var(--muted); line-height: 1.6; margin: 0 0 16px; }
+.company a { color: var(--fg); }
+.company .section-title-link { text-decoration: none; }
+.section-title-link span { display: inline-block; margin-left: 0.3em; font-size: 0.7em; color: var(--muted); }
+.section-title-link:hover span { color: var(--fg); }
+.company .lead { color: var(--fg); font-size: clamp(17px, 1.9vw, 21px); line-height: 1.4; letter-spacing: -0.01em; margin: 0 0 28px; max-width: 30em; }
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.scroll-reveal.is-visible { opacity: 1; transform: none; }
+.contact-fallback { margin: 0 0 24px !important; font-size: 14px; }
+.contact-fallback a { text-underline-offset: 3px; }
+.contact-form { display: grid; gap: 22px; }
+.contact-field { display: grid; gap: 10px; color: var(--fg); font-size: 15px; }
+.contact-field input,
+.message-box textarea {
+  display: block;
+  width: 100%;
+  color: var(--fg);
+  background: rgba(17, 17, 17, 0.88);
+  border: 1px solid rgba(242, 242, 242, 0.26);
+  border-radius: 22px;
+  font: inherit;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.contact-field input { min-height: 56px; padding: 0 18px; }
+.message-box { position: relative; display: block; }
+.message-box textarea {
+  min-height: 210px;
+  resize: vertical;
+  padding: 18px 18px 78px;
+  line-height: 1.55;
+}
+.contact-field input:focus,
+.message-box textarea:focus { border-color: rgba(242, 242, 242, 0.68); background: rgba(17, 17, 17, 0.96); }
+.contact-field input::placeholder,
+.message-box textarea::placeholder { color: #777; }
+.field-help { color: var(--muted); font-size: 12px; }
+.send-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  min-width: 108px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 5px 10px 5px 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #111;
+  background: #eee;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease, color 0.2s ease, background-color 0.2s ease;
+}
+.send-button.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.send-button:hover:not(.is-animating):not(.is-complete) { background: #fff; }
+.send-button:disabled { cursor: wait; }
+.send-arrow { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: #eee; background: #111; font-size: 16px; line-height: 1; }
+.send-bits { display: none; align-items: center; gap: 7px; color: #f4f4f4; font-size: 22px; font-weight: 500; line-height: 1; font-variant-numeric: lining-nums; }
+.send-bit { opacity: 0.16; transition: opacity 0.24s ease, text-shadow 0.24s ease; }
+.send-button.is-animating,
+.send-button.is-complete,
+.send-button.is-animating:hover,
+.send-button.is-complete:hover { color: #f4f4f4; background: #090909; border-color: rgba(242, 242, 242, 0.28); }
+.send-button.is-animating .send-label,
+.send-button.is-animating .send-arrow,
+.send-button.is-complete .send-label,
+.send-button.is-complete .send-arrow { display: none; }
+.send-button.is-animating .send-bits,
+.send-button.is-complete .send-bits { display: inline-flex; }
+.send-button.is-zero .send-bit:first-child,
+.send-button.is-one .send-bit:last-child,
+.send-button.is-complete .send-bit { opacity: 1; text-shadow: 0 0 12px rgba(255,255,255,0.7); }
+.contact-status { margin: 0 !important; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.contact-status.is-error { color: #e8aaa3; }
+.contact-status.is-success { color: var(--fg); }
+.contact-trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 640px) {
+  .contact-field { font-size: 14px; }
+  .message-box textarea { min-height: 190px; padding: 16px 14px 72px; }
+  .send-button { right: 8px; bottom: 8px; }
+}
+/* Ne yapıyoruz: dört madde; masaüstünde iki sütun. */
+.pillars { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 40px; }
+.pillars h3 { margin: 0 0 8px; font-size: 17px; font-weight: 600; color: var(--fg); }
+.pillars p { margin: 0; font-size: 15px; }
+@media (max-width: 640px) { .pillars { grid-template-columns: 1fr; gap: 22px; } }
+.more-link { margin-top: 42px !important; }
+.more-link a { display: inline-block; padding-bottom: 4px; text-decoration: none; border-bottom: 1px solid var(--line); }
+.more-link a:hover { border-color: var(--fg); }
+body:not(.inner-page) .company .more-link a { color: var(--muted); font-size: 14px; border-color: rgba(242, 242, 242, 0.14); }
+body:not(.inner-page) .company .more-link a:hover,
+body:not(.inner-page) .company .more-link a:focus-visible { color: var(--fg); border-color: var(--fg); }
+
+/* Sabit başlık: menü baştan görünür; filmin sonunda finale logosu sol üste uçar (js/site.js).
+   JS/WebGL yoksa logo baştan görünür. */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: calc(64px + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  opacity: var(--shade, 0);
+}
+
+.brand,
+.menu-btn { pointer-events: auto; }
+.brand { display: flex; align-items: center; gap: 12px; height: 40px; }
+.brand-mark { position: relative; display: block; height: 100%; width: 35px; }
+/* Geyik büyük çizilip 40 px'e küçültülür (360 × 0.1111): filmden uçarken büyütülmez, keskin kalır.
+   Yükseklik js/site.js → BRAND_BIG ile aynı olmalı. */
+.brand-mark img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 360px;
+  width: auto;
+  max-width: none;
+  transform-origin: center;
+  transform: translate(-50%, -50%) scale(0.1111);
+}
+/* Film kararı verilene kadar geyik görünmez; uçuşta site.js inline opacity ile devralır. */
+html.js:not(.no-film) body:not(.inner-page) .brand-mark img { opacity: 0; }
+/* "Y K G" yazısı geyik yerine oturduktan sonra belirir (js/site.js). */
+.brand-word { display: block; height: 13px; width: auto; opacity: 0; }
+html.no-film .brand-word { opacity: 1; }
+
+.menu-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  display: grid;
+  place-content: center;
+  gap: 7px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.menu-btn > span:not(.menu-points) {
+  display: block;
+  width: 24px;
+  height: 3px;
+  background: radial-gradient(circle, var(--fg) 0 0.75px, transparent 0.95px) left center / 3px 3px repeat-x;
+  filter: drop-shadow(0 0 1.5px rgba(242, 242, 242, 0.35));
+  transition: transform 0.3s ease;
+}
+.menu-btn[aria-expanded="true"] > span:not(.menu-points):first-child { transform: translateY(4.25px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] > span:not(.menu-points):last-child { transform: translateY(-4.25px) rotate(-45deg); }
+
+/* Ana sayfa menüsü: yıldız alanındaki ışık noktalarıyla çizilir ve ilk kaydırmada belirir. */
+.menu-btn > .menu-points {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  background: none;
+  filter: none;
+  pointer-events: none;
+}
+.menu-row { position: absolute; inset: 0; }
+.menu-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.8px;
+  height: 1.8px;
+  border-radius: 50%;
+  background: var(--fg);
+  box-shadow: 0 0 2px rgba(242, 242, 242, 0.55);
+  transform: translate(var(--x), var(--closed-y));
+  opacity: 0.92;
+}
+.menu-row--a .menu-dot { --closed-y: -3.5px; --open-y: var(--x); }
+.menu-row--b .menu-dot { --closed-y: 3.5px; --open-y: calc(0px - var(--x)); }
+.menu-row--a .menu-dot:nth-child(1) { --x: -10px; --burst-x: -86vw; --burst-y: 13vh; --drift-x: -54vw; --drift-y: -42vh; --delay: 0ms; }
+.menu-row--a .menu-dot:nth-child(2) { --x: -7.5px; --burst-x: -18vw; --burst-y: -54vh; --drift-x: 31vw; --drift-y: -8vh; --delay: 65ms; }
+.menu-row--a .menu-dot:nth-child(3) { --x: -5px; --burst-x: -67vw; --burst-y: 41vh; --drift-x: -82vw; --drift-y: 12vh; --delay: 185ms; }
+.menu-row--a .menu-dot:nth-child(4) { --x: -2.5px; --burst-x: -4vw; --burst-y: 22vh; --drift-x: 19vw; --drift-y: 46vh; --delay: 30ms; }
+.menu-row--a .menu-dot:nth-child(5) { --x: 0px; --burst-x: -74vw; --burst-y: -21vh; --drift-x: 43vw; --drift-y: -39vh; --delay: 150ms; }
+.menu-row--a .menu-dot:nth-child(6) { --x: 2.5px; --burst-x: -32vw; --burst-y: -43vh; --drift-x: -58vw; --drift-y: 25vh; --delay: 85ms; }
+.menu-row--a .menu-dot:nth-child(7) { --x: 5px; --burst-x: -91vw; --burst-y: -32vh; --drift-x: -27vw; --drift-y: -46vh; --delay: 215ms; }
+.menu-row--a .menu-dot:nth-child(8) { --x: 7.5px; --burst-x: -12vw; --burst-y: 47vh; --drift-x: -72vw; --drift-y: -5vh; --delay: 45ms; }
+.menu-row--a .menu-dot:nth-child(9) { --x: 10px; --burst-x: -48vw; --burst-y: -8vh; --drift-x: 37vw; --drift-y: 34vh; --delay: 135ms; }
+.menu-row--b .menu-dot:nth-child(1) { --x: -10px; --burst-x: -36vw; --burst-y: -48vh; --drift-x: -68vw; --drift-y: 27vh; --delay: 110ms; }
+.menu-row--b .menu-dot:nth-child(2) { --x: -7.5px; --burst-x: -78vw; --burst-y: 31vh; --drift-x: 23vw; --drift-y: 9vh; --delay: 10ms; }
+.menu-row--b .menu-dot:nth-child(3) { --x: -5px; --burst-x: -7vw; --burst-y: 12vh; --drift-x: -85vw; --drift-y: -46vh; --delay: 200ms; }
+.menu-row--b .menu-dot:nth-child(4) { --x: -2.5px; --burst-x: -59vw; --burst-y: -51vh; --drift-x: 12vw; --drift-y: 31vh; --delay: 70ms; }
+.menu-row--b .menu-dot:nth-child(5) { --x: 0px; --burst-x: -22vw; --burst-y: 43vh; --drift-x: -71vw; --drift-y: 12vh; --delay: 160ms; }
+.menu-row--b .menu-dot:nth-child(6) { --x: 2.5px; --burst-x: -88vw; --burst-y: 21vh; --drift-x: 39vw; --drift-y: -37vh; --delay: 20ms; }
+.menu-row--b .menu-dot:nth-child(7) { --x: 5px; --burst-x: -42vw; --burst-y: -28vh; --drift-x: -13vw; --drift-y: 45vh; --delay: 220ms; }
+.menu-row--b .menu-dot:nth-child(8) { --x: 7.5px; --burst-x: -69vw; --burst-y: -9vh; --drift-x: 8vw; --drift-y: -49vh; --delay: 90ms; }
+.menu-row--b .menu-dot:nth-child(9) { --x: 10px; --burst-x: -15vw; --burst-y: 46vh; --drift-x: -79vw; --drift-y: 29vh; --delay: 180ms; }
+.menu-btn.has-opened[aria-expanded="true"] .menu-dot { animation: points-to-x 1300ms cubic-bezier(0.18, 0.72, 0.2, 1) var(--delay) both; }
+.menu-btn.has-opened[aria-expanded="false"] .menu-dot { animation: points-to-menu 1300ms cubic-bezier(0.18, 0.72, 0.2, 1) var(--delay) both; }
+@keyframes points-to-x {
+  0% { transform: translate(var(--x), var(--closed-y)) scale(1); opacity: 0.92; }
+  28% { transform: translate(var(--burst-x), var(--burst-y)) scale(0.6); opacity: 0.4; }
+  52% { transform: translate(var(--drift-x), var(--drift-y)) scale(0.35); opacity: 0.22; }
+  70% { transform: translate(var(--x), var(--open-y)) scale(0.62); opacity: 0.62; }
+  100% { transform: translate(var(--x), var(--open-y)) scale(1); opacity: 0.98; }
+}
+@keyframes points-to-menu {
+  0% { transform: translate(var(--x), var(--open-y)) scale(1); opacity: 0.98; }
+  28% { transform: translate(var(--burst-x), var(--burst-y)) scale(0.55); opacity: 0.35; }
+  52% { transform: translate(var(--drift-x), var(--drift-y)) scale(0.3); opacity: 0.18; }
+  70% { transform: translate(var(--x), var(--closed-y)) scale(0.62); opacity: 0.6; }
+  100% { transform: translate(var(--x), var(--closed-y)) scale(1); opacity: 0.92; }
+}
+html.js body:not(.inner-page) .site-header:not(.has-scrolled) .menu-btn {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.menu-btn { transition: opacity 0.35s ease, visibility 0.35s ease; }
+
+/* Film sırasında yalnız logo uçuş tamamlanana kadar dokunulamaz. */
+html.js body:not(.inner-page) .site-header:not(.is-docked) .brand { pointer-events: none; }
+
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 96px max(24px, env(safe-area-inset-left)) 48px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.menu[hidden] { display: none; }
+.menu ol { list-style: none; margin: auto auto 0; padding: 0; width: min(100%, 760px); flex-shrink: 0; }
+/* Madde: küçük numara, başlık, altında tek satır açıklama. */
+.menu li a {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  grid-template-areas: "num label" ". desc";
+  align-items: baseline;
+  padding: 12px 0;
+  color: var(--fg);
+  text-decoration: none;
+}
+.menu .num { grid-area: num; color: var(--muted); font-size: 12px; letter-spacing: 0.18em; font-variant-numeric: tabular-nums; }
+.menu .label { grid-area: label; font-size: clamp(30px, 6vw, 52px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; transition: color 0.2s ease; }
+.menu .desc { grid-area: desc; margin-top: 6px; color: var(--muted); font-size: 14px; }
+.menu li a:hover .label { color: var(--muted); }
+/* Bulunulan bölüm: numara beyaz, başlığın yanında küçük nokta. */
+.menu a[aria-current] .num { color: var(--fg); }
+.menu a[aria-current] .label::after { content: ""; display: inline-block; width: 6px; height: 6px; margin-left: 12px; border-radius: 50%; background: var(--fg); vertical-align: middle; }
+/* Açılışta maddeler sırayla belirir (herkes için; sistem ayarı yok sayılır, bkz. DEVIR). */
+.menu:not([hidden]) li { animation: menu-item 0.45s ease both; }
+.menu:not([hidden]) li:nth-child(2) { animation-delay: 0.06s; }
+.menu:not([hidden]) li:nth-child(3) { animation-delay: 0.12s; }
+.menu:not([hidden]) li:nth-child(4) { animation-delay: 0.18s; }
+.menu:not([hidden]) li:nth-child(5) { animation-delay: 0.24s; }
+.menu:not([hidden]) .menu-mail { animation: menu-item 0.45s 0.30s ease both; }
+@keyframes menu-item { from { opacity: 0; transform: translateY(8px); } }
+.menu-mail { width: min(100%, 760px); margin: 40px auto auto; flex-shrink: 0; }
+.menu-mail a { color: var(--muted); font-size: 14px; }
+html.menu-open { overflow: hidden; }
+.brand:focus-visible, .menu-btn:focus-visible, .menu a:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+
+/* ?debug=1 yönetmen paneli */
+.debug {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  width: min(320px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+  z-index: 10;
+  background: rgba(10, 10, 10, 0.88);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 12px;
+  color: var(--fg);
+}
+
+.debug h3 { margin: 10px 0 6px; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.debug .row { display: grid; grid-template-columns: 96px 1fr 44px; gap: 8px; align-items: center; margin: 4px 0; }
+.debug input[type="range"] { width: 100%; }
+.debug .stages { display: flex; flex-wrap: wrap; gap: 4px; }
+.debug button {
+  font: inherit;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.debug .meta { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+@supports (height: 100lvh) {
+  .hero { --bar: calc(100lvh - 100svh); }
+}
+
+/* Sahne yazıları: arkasındaki ışığın tersi olur — beyaz patlamada siyah, karanlıkta beyaz. */
+.captions {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: none;
+  mix-blend-mode: difference;
+}
+html.webgl .captions { display: block; }
+.captions p {
+  position: absolute;
+  left: clamp(24px, 7vw, 104px);
+  bottom: calc(22% + var(--bar));
+  max-width: 86vw;
+  margin: 0;
+  transform: translateY(8px);
+  text-align: left;
+  color: #fff;
+  font-family: "Space Grotesk", "Manrope", sans-serif;
+  font-synthesis: none;
+  font-size: clamp(64px, 11vw, 158px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 1.06;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+@media (max-width: 900px) {
+  .captions p { bottom: calc(25% + var(--bar)); }
+}
+@media (max-width: 480px) {
+  .captions p { font-size: clamp(64px, 19vw, 88px); }
+}
+.finale .slogan { color: var(--fg); font-size: clamp(20px, 2.6vw, 28px); letter-spacing: 0.01em; margin-top: 2px; }
+/* Kapanış cümlesi: ana mesaj; slogandan bir kademe küçük, düz metinden büyük. */
+.finale .tagline,
+.fallback .tagline { color: #d9d9d9; font-size: clamp(17px, 2vw, 22px); line-height: 1.45; max-width: 540px; margin-top: 6px; }
+
+
+/* Alt bilgi: yalnız © satırı, solda (menüdeki bağlantılar ve e-posta burada tekrar edilmez). */
+.site-footer {
+  border-top: 1px solid rgba(242, 242, 242, 0.1);
+  background: rgba(0, 0, 0, 0.72); /* yıldızlar yazıların arkasında kısılır */
+  padding: 22px 16px calc(22px + env(safe-area-inset-bottom));
+  color: var(--muted);
+  font-size: 13px;
+}
+.site-footer p { margin: 0; } /* başlıktaki logoyla aynı sol hiza (16 px) */
+.site-footer a { color: var(--muted); text-decoration: none; transition: color 0.2s ease; }
+.site-footer a:hover { color: var(--fg); }
+
+/* Ana sayfanın Ne yapıyoruz bağlantıları */
+.pillars a { display: block; color: inherit; text-decoration: none; }
+.pillars a:hover h3 { color: var(--muted); }
+.pillars a:focus-visible { outline: 1px solid var(--fg); outline-offset: 6px; }
+
+/* Onaylı kapanış dengesi; harf çizimleri korunur. */
+.finale > #finale-logo { width: min(45.76vw, 264px); }
+.fallback > img { width: min(33.44vw, 193.6px); }
+.finale h1 { margin-top: 8px; }
+.finale .slogan { margin-top: 7px; }
+/* Keep the closing wordmark and slogan on the same visual axis. */
+.finale .lockup,
+.fallback .lockup { width: 100%; display: flex; justify-content: center; }
+.finale .slogan,
+.fallback .slogan { transform: translateX(.22em); }
+/* Sayfalardaki yıldız karosu menüde de görünür; yeni çizim döngüsü yok. */
+.menu { background-image: var(--site-star-texture, none); background-size: 512px 512px; background-repeat: repeat; }

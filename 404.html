@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#000000" />
+    <title>Bu adres bir yere çıkmıyor. · ykg.digital</title>
+    <link rel="icon" type="image/png" href="/assets/favicon.png" />
+    <link rel="preload" href="/assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/fonts/manrope-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      @font-face {
+        font-family: "Manrope";
+        font-style: normal;
+        font-display: swap;
+        font-weight: 200 800;
+        src: url(/assets/fonts/manrope-latin-wght-normal.woff2) format("woff2");
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: "Manrope";
+        font-style: normal;
+        font-display: swap;
+        font-weight: 200 800;
+        src: url(/assets/fonts/manrope-latin-ext-wght-normal.woff2) format("woff2");
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02FF, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      :root { color-scheme: dark; --fg: #f2f2f2; --muted: #a3a3a3; --line: rgba(242,242,242,.24); }
+      * { box-sizing: border-box; }
+      html, body { min-height: 100%; margin: 0; }
+      html { background: #000; }
+      body {
+        min-height: 100vh;
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        padding: max(28px, env(safe-area-inset-top)) 24px max(28px, env(safe-area-inset-bottom));
+        color: var(--fg);
+        background: #000;
+        font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-align: center;
+      }
+      .sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 1; background-repeat: repeat; }
+      #particle-canvas { position: fixed; inset: 0; z-index: 1; display: none; width: 100%; height: 100%; pointer-events: none; }
+      body.has-particles #particle-canvas { display: block; }
+      main { position: relative; z-index: 2; width: min(100%, 720px); display: flex; flex-direction: column; align-items: center; }
+      .brand { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: clamp(52px, 10vh, 88px); }
+      .brand-mark { display: block; width: 58px; height: auto; opacity: .9; }
+      .brand-word { display: block; width: 72px; height: auto; opacity: .9; }
+      .code {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        min-height: clamp(76px, 18vw, 110px);
+        margin: 0 0 10px;
+        color: rgba(242,242,242,.38);
+        font-size: clamp(58px, 18vw, 92px);
+        font-weight: 500;
+        letter-spacing: .02em;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+      .code.has-particles { color: transparent; -webkit-text-fill-color: transparent; }
+      h1 { margin: 0; font-size: clamp(32px, 8vw, 54px); font-weight: 400; letter-spacing: -.045em; line-height: 1.12; }
+      .message { max-width: 100%; margin: 16px 0 30px; color: var(--muted); font-size: 15px; line-height: 1.65; text-wrap: balance; }
+      .home-link {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        padding: 0 20px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--fg);
+        background: rgba(10,10,10,.55);
+        font-size: 14px;
+        text-decoration: none;
+        transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+      }
+      .home-link:hover { background: rgba(30,30,30,.78); border-color: rgba(242,242,242,.5); transform: translateY(-1px); }
+      .home-link:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+      .arrow { font-size: 17px; line-height: 1; }
+    </style>
+  </head>
+  <body>
+    <div class="sky" id="sky" aria-hidden="true"></div>
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <main>
+      <a class="brand" href="/" aria-label="ykg.digital ana sayfa">
+        <img class="brand-mark" src="/assets/mark-deer.png" alt="" width="1295" height="1500" />
+        <img class="brand-word" src="/assets/ykg-wordmark.svg" alt="ykg.digital" width="49" height="13" />
+      </a>
+      <p class="code" id="error-code" aria-label="Hata 404">404</p>
+      <h1>Bu adres bir yere çıkmıyor.</h1>
+      <p class="message">Aradığınız adres değişmiş, kaldırılmış ya da hiç var olmamış olabilir.</p>
+      <a class="home-link" href="/">Başlangıca dön <span class="arrow" aria-hidden="true">↗</span></a>
+    </main>
+    <script>
+      (() => {
+        const sky = document.getElementById("sky");
+        const size = 512;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const canvas = document.createElement("canvas");
+        canvas.width = canvas.height = Math.round(size * dpr);
+        const context = canvas.getContext("2d");
+        if (!context) return;
+        context.scale(dpr, dpr);
+        let seed = 20260928;
+        const random = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+        for (let index = 0; index < 150; index += 1) {
+          const bright = random() < 0.07;
+          const radius = bright ? 0.8 + random() * 0.5 : 0.4 + random() * 0.4;
+          const alpha = bright ? 0.6 + random() * 0.3 : 0.18 + random() * 0.32;
+          context.fillStyle = `rgba(242, 242, 242, ${alpha.toFixed(3)})`;
+          context.beginPath();
+          context.arc(random() * size, random() * size, radius, 0, Math.PI * 2);
+          context.fill();
+        }
+        sky.style.backgroundImage = `url(${canvas.toDataURL("image/png")})`;
+        sky.style.backgroundSize = `${size}px ${size}px`;
+      })();
+    </script>
+    <script src="/404-particles.js" defer></script>
+  </body>
+</html>

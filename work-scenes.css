@@ -1,0 +1,16 @@
+/* Astra scenes share the approved 600 × 270 drawing coordinates. */
+.work-section .ai-diagram { align-self: center; padding-top: 0; }
+.brand-scene-wrap, .product-scene-wrap, .ai-scene-wrap, .workflow-scene-wrap { position: relative; width: 100%; aspect-ratio: 20 / 9; }
+.ai-diagram .ai-scene { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.ai-diagram .ai-scene[hidden] { display: none; }
+.ai-diagram .ai-scene-fallback { position: absolute; top: 50%; transform: translateY(-50%); }
+.ai-diagram.has-animation .ai-scene-fallback { display: none; }
+:is(.brand-diagram, .product-diagram, .ai-diagram, .workflow-diagram) .work-diagram-labels { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 0; margin-top: 4px; text-align: center; }
+:is(.brand-diagram, .product-diagram, .ai-diagram, .workflow-diagram) .work-diagram-labels span { max-width: none; text-align: center; transition: color .4s; }
+:is(.brand-diagram, .product-diagram, .ai-diagram, .workflow-diagram) .work-diagram-labels .active { color: #fff; }
+@media (max-width: 640px) { :is(.brand-diagram, .product-diagram, .ai-diagram, .workflow-diagram) { margin-inline: auto; } }
+
+/* Screen-wide gathering stays behind content and cannot intercept input. */
+.work-page .work-formation { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.work-page .inner-main, .work-page .site-footer { position: relative; z-index: 1; }
+.menu-open .work-formation { visibility: hidden; }

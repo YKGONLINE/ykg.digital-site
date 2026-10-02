@@ -1,0 +1,163 @@
+@font-face {
+  font-family: Manrope;
+  src: url("assets/fonts/manrope-latin-wght-normal.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: Manrope;
+  src: url("assets/fonts/manrope-latin-ext-wght-normal.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0100-024F, U+1E00-1EFF;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: #030405; }
+body {
+  margin: 0;
+  min-width: 320px;
+  isolation: isolate;
+  color: #f5f6f5;
+  font: 400 16px/1.72 Manrope, Arial, sans-serif;
+  background-color: #030405;
+}
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .92;
+  background-repeat: repeat;
+  background-image:
+    radial-gradient(circle, rgba(230,242,244,.4) .65px, transparent 1px),
+    radial-gradient(circle, rgba(210,225,235,.23) .6px, transparent 1px),
+    radial-gradient(circle, rgba(230,242,244,.14) .55px, transparent 1px);
+  background-size: 251px 213px, 323px 287px, 187px 231px;
+  background-position: 17px 31px, 138px 101px, 59px 157px;
+}
+.atlas-formation {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+.atlas-formation[hidden] { display: none; }
+.site-header, main, footer { position: relative; z-index: 2; }
+/* Keep stars present, with an imperceptible atmospheric falloff behind the hero. */
+body::before { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 38% 25%, rgba(22, 32, 34, .18), transparent 65%); }
+a { color: inherit; }
+.site-header {
+  max-width: 1440px;
+  margin: auto;
+  padding: 25px clamp(24px, 5.5vw, 84px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { display: inline-flex; align-items: center; gap: 14px; min-height: 44px; }
+.brand img { display: block; object-fit: contain; }
+.preview-label, .eyebrow {
+  color: #a3aeae;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+main { max-width: 1440px; margin: auto; padding: 85px clamp(24px, 9.5vw, 146px) 120px; }
+.intro, .article-copy { max-width: 800px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.eyebrow { margin: 0 0 40px; }
+h1.atlas-title { position: relative; width: min(100%, 680px); aspect-ratio: 1390 / 320; margin: 0 0 60px; }
+.atlas-wordmark-fallback { display: block; width: 100%; height: 100%; }
+.atlas-title.is-forming:not(.is-settled) .atlas-wordmark-fallback { visibility: hidden; }
+p { margin: 0 0 1.65em; }
+.lead { max-width: 760px; font-size: clamp(22px, 2.05vw, 29px); line-height: 1.55; letter-spacing: -.025em; }
+.intro > p:last-child { max-width: 660px; }
+.intro > p:not(.eyebrow):not(.lead), .article-copy p, .beta > p:not(.eyebrow) {
+  color: #c5cccc;
+  font-size: clamp(16px, 1.35vw, 18px);
+}
+.screens {
+  margin: 75px 0 75px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 45px);
+  align-items: start;
+}
+.screens-primary { grid-template-areas: "chat form" "copy form"; }
+.screens-primary figure:first-child { grid-area: chat; }
+.screens-primary figure:nth-child(2) { grid-area: form; }
+.screens-primary .article-copy { grid-area: copy; align-self: start; padding-top: 10px; }
+.screens figure { margin: 0; min-width: 0; }
+.screen-frame {
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 28px 70px rgba(0,0,0,.4);
+}
+.beta-link:focus-visible, .brand:focus-visible {
+  outline: 2px solid #f4f4f4;
+  outline-offset: 5px;
+}
+.screens svg { display: block; width: 100%; height: auto; }
+.screens figcaption {
+  padding: 19px 2px 0;
+  color: #dce4e4;
+  font-size: 13px;
+  letter-spacing: .02em;
+}
+.screens figcaption span { margin-right: 14px; color: #758989; font-size: 11px; }
+.article-copy { margin: 0; }
+.article-copy strong { font-weight: 600; color: #edf1f1; }
+.screens-secondary { margin-top: 55px; margin-bottom: 95px; }
+.beta { max-width: 800px; padding-top: 65px; border-top: 1px solid rgba(255,255,255,.19); }
+h2 {
+  margin: 0 0 38px;
+  font-size: clamp(38px, 5vw, 70px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -.055em;
+}
+.beta-link {
+  display: inline-flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf1f1;
+  text-decoration: none;
+  font-size: 15px;
+  cursor: pointer;
+}
+.atlas-contact { margin-top: 18px; }
+.atlas-contact .beta-link { margin-top: 0; list-style: none; }
+.atlas-contact .beta-link::-webkit-details-marker { display: none; }
+.atlas-contact .beta-link span { transition: transform .25s ease; }
+.atlas-contact[open] .beta-link span { transform: rotate(90deg); }
+.atlas-contact-panel { margin-top: 42px; }
+.atlas-contact .contact-form { max-width: 680px; }
+.atlas-contact .contact-fallback { font-size: 14px; }
+.atlas-contact .beta-link:focus-visible { outline: 2px solid #f4f4f4; outline-offset: 5px; }
+footer { max-width: 1440px; margin: auto; padding: 0 clamp(24px, 5.5vw, 84px) 32px; color: #8c9797; font-size: 12px; }
+@media (max-width: 760px) {
+  .site-header { padding-top: 18px; }
+  .preview-label { font-size: 9px; }
+  main { padding-top: 62px; padding-bottom: 90px; }
+  .eyebrow { margin-bottom: 32px; }
+  h1.atlas-title { margin-bottom: 42px; }
+  .screens { margin: 60px 0 65px; grid-template-columns: 1fr; gap: 48px; }
+  .screens-primary { grid-template-areas: "chat" "form" "copy"; }
+  .screens figure { max-width: 550px; }
+  .screens-secondary { margin-top: 55px; margin-bottom: 80px; }
+  .beta { padding-top: 50px; }
+}
+
+
+/* The shared site header and menu stay above the product illustration. */
+.atlas-page .menu { z-index: 5; }
+.atlas-page .inner-site-header { z-index: 6; width: 100%; max-width: none; margin: 0; }
+.atlas-page .atlas-main { flex: 1; }
