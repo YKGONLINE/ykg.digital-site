@@ -23,6 +23,13 @@
     <meta name="twitter:image" content="https://ykg.digital/assets/social-card.png" />
     <meta name="twitter:image:alt" content="ykg.digital — Atomdan Bite." />
     <script>
+      // Yenilemede içerik işaretini etiketten önce temizle; tarayıcının
+      // kaydırma geri yüklemesini ve diğer bölüm adreslerini koru.
+      try {
+        if (location.hash === "#icerik" && performance.getEntriesByType("navigation")[0]?.type === "reload") {
+          history.replaceState(history.state, "", location.pathname + location.search);
+        }
+      } catch {}
       try {
         const visitKey = "ykg-digital-film-visited-v1";
         if (localStorage.getItem(visitKey) === "1") {
