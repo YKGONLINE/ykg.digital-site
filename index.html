@@ -94,7 +94,8 @@
     <link rel="preload" href="assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/manrope-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/sora-wght.ttf" as="font" type="font/ttf" crossorigin />
-    <link rel="stylesheet" href="styles.css?v=33" />
+    <link rel="stylesheet" href="styles.css?v=34" />
+    <link rel="stylesheet" href="/consent.css?v=13" />
     <script>
       document.documentElement.classList.add("js");
     </script>
@@ -135,6 +136,7 @@
         <li><a href="/sapiens-4-0.html"><span class="num">04</span><span class="label">SAPIENS 4.0</span><span class="desc">İnsan ve yapay zekâ birlikte</span></a></li>
         <li><a href="/#iletisim"><span class="num">05</span><span class="label">İletişim</span><span class="desc">Bize yazın</span></a></li>
       </ol>
+      <p class="menu-secondary"><a href="/gizlilik.html">Gizlilik ve KVKK</a></p>
       <p class="menu-mail"><a href="mailto:ykg@ykg.digital">ykg@ykg.digital</a></p>
     </nav>
 
@@ -210,6 +212,7 @@
             </label>
             <input type="hidden" name="request_id" value="" />
             <div class="contact-trap" aria-hidden="true"><label>Bu alanı boş bırakın <input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
+            <p class="form-privacy">Formda paylaştığınız ad, iletişim bilgisi ve mesajınız talebinizi değerlendirmek ve size dönüş yapmak için Google hizmetleri üzerinden işlenir. <a href="/gizlilik.html#iletisim-formu">Gizlilik bilgileri</a>.</p>
             <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
           </form>
         </section>
@@ -217,13 +220,15 @@
     </main>
 
     <footer class="site-footer">
-      <p>© 2026 ykg.digital</p>
+      <p>© 2026 ykg.digital · <a href="/gizlilik.html">Gizlilik ve KVKK</a> · <a href="/cerezler.html">Çerez ve Ölçüm</a> · <button class="cookie-settings-link" type="button" data-consent-open>Çerez tercihleri</button></p>
     </footer>
 
     <script type="module" src="js/navigation.js?v=1"></script>
     <script type="module" src="js/main.js?v=17"></script>
-    <script type="module" src="js/site.js?v=19"></script>
+    <script type="module" src="js/site.js?v=22"></script>
     <script type="module" src="js/scroll-reveal.js?v=3"></script>
     <script src="js/contact-animation.js?v=5" defer></script>
+    <script src="/js/tracking-config.js?v=1" defer></script>
+    <script src="/js/analytics-consent.js?v=13" defer></script>
   </body>
 </html>

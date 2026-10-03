@@ -62,6 +62,9 @@ function update() {
     filmSkip.inert = u > 0;
     filmSkip.setAttribute("aria-hidden", String(u > 0));
   }
+  // Tercih simgesi, Sadede gel tamamen kaybolduktan sonra erişilebilir olur.
+  root.dataset.privacyReveal = String(fly);
+  window.dispatchEvent(new CustomEvent("ykg:film-handoff", { detail: { progress: fly } }));
 
   if (u > 0 && u < 1 && finaleLogo) {
     // FLIP: başlıktaki logo, finale logosunun ekrandaki yerinden kendi yerine taşınır.

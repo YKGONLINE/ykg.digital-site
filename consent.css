@@ -1,0 +1,40 @@
+.privacy-tools { max-width: calc(100% - 36px); position: fixed; z-index: 6; bottom: calc(22px + env(safe-area-inset-bottom)); right: max(clamp(18px, 4vw, 56px), env(safe-area-inset-right)); display: flex; flex-direction: column-reverse; align-items: flex-end; gap: 10px; pointer-events: none; }
+.has-privacy-dock { position: relative; padding-right: max(88px, calc(clamp(18px, 4vw, 56px) + 56px)); }
+.privacy-tools.is-footer-docked { position: absolute; bottom: calc(10px + env(safe-area-inset-bottom)); }
+.privacy-tools [hidden] { display: none !important; }
+html.menu-open .privacy-tools { display: none; }
+.privacy-chip, .privacy-panel { pointer-events: auto; }
+.privacy-chip { position: relative; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--muted, #a3a3a3); cursor: pointer; transition: color .2s, background .2s; }
+.privacy-sliders { width: 20px; height: 20px; pointer-events: none; }
+.privacy-chip:hover, .privacy-chip:focus-visible { color: var(--fg, #f2f2f2); background: rgba(242,242,242,.04); }
+.privacy-hint { position: absolute; top: 50%; right: calc(100% + 8px); transform: translateY(-50%); white-space: nowrap; padding: 6px 10px; border: 1px solid rgba(242,242,242,.14); border-radius: 8px; background: #0c0c0c; color: #a3a3a3; font: 12px/1.4 Manrope, sans-serif; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s; }
+.privacy-chip:hover .privacy-hint, .privacy-chip:focus-visible .privacy-hint { opacity: 1; visibility: visible; }
+.privacy-panel { width: min(520px, calc(100vw - 36px)); max-width: 100%; max-height: calc(100dvh - 110px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); margin-right: 0; overflow-y: auto; padding: 20px; border: 1px solid rgba(242,242,242,.16); border-radius: 18px; background: rgba(10,10,10,.96); color: #f2f2f2; box-shadow: 0 16px 44px rgba(0,0,0,.3); backdrop-filter: blur(16px); }
+.privacy-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: -6px -8px 6px 0; }
+.privacy-panel h2 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 500; letter-spacing: -.015em; }
+.privacy-close { flex: none; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #a3a3a3; cursor: pointer; }
+.privacy-close svg { width: 24px; height: 24px; }
+.privacy-close:hover { color: #f2f2f2; background: rgba(242,242,242,.04); }
+.privacy-panel p { margin: 0; color: #a3a3a3; font-size: 12px; line-height: 1.65; }
+.privacy-panel a { color: #c6c6c6; text-underline-offset: 3px; }
+.privacy-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 18px; }
+.privacy-actions button, .privacy-save button { min-height: 40px; padding: 0 10px; border: 1px solid rgba(242,242,242,.2); border-radius: 10px; background: transparent; color: #c6c6c6; font: inherit; font-size: 12px; cursor: pointer; transition: color .2s, border-color .2s; }
+.privacy-actions button:hover, .privacy-save button:hover { color: #f2f2f2; border-color: rgba(242,242,242,.55); }
+.privacy-preferences { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(242,242,242,.12); }
+.privacy-toggle { display: flex; gap: 11px; align-items: flex-start; margin: 14px 0; color: #c6c6c6; font-size: 12px; line-height: 1.5; }
+.privacy-toggle strong { font-weight: 500; color: #f2f2f2; }
+.privacy-toggle input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: #c6c6c6; }
+.privacy-save { display: flex; justify-content: flex-end; }
+.privacy-tools :focus-visible { outline: 2px solid #c6c6c6; outline-offset: 3px; }
+.privacy-more { margin-top: 12px; color: #a3a3a3; font-size: 11px; line-height: 1.5; }
+.privacy-more summary { width: fit-content; cursor: pointer; color: #c6c6c6; }
+.privacy-more p { margin-top: 8px; font-size: 11px; }
+.site-footer a, .cookie-settings-link { color: inherit; }
+.cookie-settings-link { padding: 0; border: 0; background: transparent; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.form-privacy { max-width: 680px; margin: -8px 0 0; color: var(--muted, #a3a3a3); font-size: 12px; line-height: 1.6; }
+.form-privacy a { color: var(--fg, #f2f2f2); text-underline-offset: 3px; }
+.site-footer p { line-height: 1.7; }
+@media (max-width: 520px) {
+  .privacy-panel { padding: 16px; border-radius: 16px; }
+  .privacy-actions { gap: 6px; }
+}

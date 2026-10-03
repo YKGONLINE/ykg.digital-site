@@ -89,9 +89,10 @@
   </script>
   <title>ATLAS · ykg.digital</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="stylesheet" href="styles.css?v=34">
   <link rel="stylesheet" href="inner.css?v=9">
   <link rel="stylesheet" href="atlas.css?v=2">
+  <link rel="stylesheet" href="/consent.css?v=13">
   <script src="js/inner-sky.js?v=2" defer></script>
   <script src="js/atlas-wordmark.js?v=1" defer></script>
   <script type="module" src="js/navigation.js?v=1"></script>
@@ -123,6 +124,7 @@
         <li><a href="/sapiens-4-0.html"><span class="num">04</span><span class="label">SAPIENS 4.0</span><span class="desc">İnsan ve yapay zekâ birlikte</span></a></li>
         <li><a href="/#iletisim"><span class="num">05</span><span class="label">İletişim</span><span class="desc">Bize yazın</span></a></li>
       </ol>
+      <p class="menu-secondary"><a href="/gizlilik.html">Gizlilik ve KVKK</a></p>
       <p class="menu-mail"><a href="mailto:ykg@ykg.digital">ykg@ykg.digital</a></p>
     </nav>
   <main class="atlas-main">
@@ -189,7 +191,8 @@
               <input type="hidden" name="message" value="" />
               <input type="hidden" name="request_id" value="" />
               <div class="contact-trap" aria-hidden="true"><label>Bu alanı boş bırakın <input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
-              <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
+              <p class="form-privacy">Beta başvuruları yalnızca emlak sektöründe çalışan kişiler içindir. Paylaştığınız bilgiler başvurunuzu değerlendirmek ve size dönüş yapmak için Google hizmetleri üzerinden işlenir. <a href="/gizlilik.html#atlas-beta-basvurusu">Gizlilik bilgileri</a>.</p>
+            <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
             </form>
           </div>
         </details>
@@ -197,7 +200,9 @@
     </article>
   </main>
 
-  <footer>© 2026 ykg.digital</footer>
+  <footer>© 2026 ykg.digital · <a href="/gizlilik.html">Gizlilik ve KVKK</a> · <a href="/cerezler.html">Çerez ve Ölçüm</a> · <button class="cookie-settings-link" type="button" data-consent-open>Çerez tercihleri</button></footer>
   <script src="js/contact-animation.js?v=5" defer></script>
+  <script src="/js/tracking-config.js?v=1" defer></script>
+    <script src="/js/analytics-consent.js?v=13" defer></script>
 </body>
 </html>

@@ -497,6 +497,11 @@ html.js body:not(.inner-page) .site-header:not(.is-docked) .brand { pointer-even
 @keyframes menu-item { from { opacity: 0; transform: translateY(8px); } }
 .menu-mail { width: min(100%, 760px); margin: 40px auto auto; flex-shrink: 0; }
 .menu-mail a { color: var(--muted); font-size: 14px; }
+.menu-secondary { width: min(100%, 760px); margin: 18px auto 0; padding-inline-start: 44px; flex-shrink: 0; }
+.menu-secondary a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); font-size: 13px; text-decoration: none; }
+.menu-secondary a:hover, .menu-secondary a[aria-current="page"] { color: var(--fg); }
+.menu-secondary a[aria-current="page"] { text-decoration: underline; text-underline-offset: 4px; }
+.menu:not([hidden]) .menu-secondary { animation: menu-item 0.45s 0.30s ease both; }
 html.menu-open { overflow: hidden; }
 .brand:focus-visible, .menu-btn:focus-visible, .menu a:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
 
