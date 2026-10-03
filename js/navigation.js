@@ -7,17 +7,19 @@ const main = document.querySelector("main");
 const footer = document.querySelector("footer");
 
 if (button && menu) {
-  const path = location.pathname === "/index.html" ? "/" : location.pathname;
+  const path = location.pathname.endsWith("/index.html") ? location.pathname.slice(0, -10) : location.pathname;
+  const english = root.lang.startsWith("en");
+  const home = english ? "/en/" : "/";
   const links = [...menu.querySelectorAll("a[href]")];
-  const pageLinks = links.filter((link) => link.pathname !== "/" || !link.hash);
+  const pageLinks = [...menu.querySelectorAll("ol a[href], .menu-secondary a[href]")];
   for (const link of pageLinks) {
     if (link.pathname === path && !link.hash) link.setAttribute("aria-current", "page");
   }
 
   // Ana sayfada İletişim görünürken konumu belirt; filmde hiçbir madde etkin değildir.
-  if (path === "/") {
+  if (path === home) {
     const contact = document.getElementById("iletisim");
-    const contactLink = links.find((link) => link.getAttribute("href") === "/#iletisim");
+    const contactLink = pageLinks.find((link) => link.getAttribute("href") === `${home}#iletisim`);
     if (contact && contactLink) {
       const markContact = () => {
         const bounds = contact.getBoundingClientRect();
@@ -32,12 +34,24 @@ if (button && menu) {
     }
   }
 
+  // Section IDs are shared across languages; carry the section, not preview queries.
+  const languageLinks = [...menu.querySelectorAll("[data-language-switch]")];
+  const updateLanguageLinks = () => {
+    languageLinks.forEach((link) => {
+      const target = new URL(link.href);
+      target.hash = location.hash;
+      link.href = target.pathname + target.hash;
+    });
+  };
+  updateLanguageLinks();
+  window.addEventListener("hashchange", updateLanguageLinks);
+
   const background = [brand, main, footer].filter(Boolean);
   let priorInert = [];
   function setMenu(open) {
     menu.hidden = !open;
     button.setAttribute("aria-expanded", String(open));
-    button.setAttribute("aria-label", open ? "Menüyü kapat" : "Menüyü aç");
+    button.setAttribute("aria-label", open ? (english ? "Close menu" : "Menüyü kapat") : (english ? "Open menu" : "Menüyü aç"));
     if (open) button.classList.add("has-opened");
     root.classList.toggle("menu-open", open);
     if (open) {

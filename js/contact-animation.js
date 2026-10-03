@@ -2,6 +2,50 @@
   const form = document.getElementById("contact-form");
   if (!form) return;
 
+  const words = document.documentElement.lang.startsWith("en") ? {
+    "success": "Your message has been sent. We'll reply using the contact details you provided.",
+    "name": "Please enter your name.",
+    "contact": "Please enter a valid email address or phone number.",
+    "limit": "Your message can be at most 1,024 characters.",
+    "message": "Please write your message.",
+    "retryLabel": "Send message again",
+    "retry": "Try again",
+    "rate": "The daily limit of 5 submission attempts has been reached for this internet connection. Try again tomorrow or email us.",
+    "verification": "The security check could not be completed. Please try again.",
+    "unknown": "Delivery could not be confirmed. Your message may have arrived; please email us before resending.",
+    "failure": "The message could not be sent. Please try again or email us.",
+    "fallback": "If sending still fails, <a href=\"mailto:ykg@ykg.digital\">email us</a>.",
+    "sentLabel": "Message sent",
+    "sent": "Sent",
+    "sendLabel": "Send message",
+    "send": "Send",
+    "unavailable": "The form is unavailable. Please email us for now.",
+    "sendingLabel": "Sending message",
+    "sending": "Sending message…",
+    "challenge": "Please complete the security check to send another message."
+  } : {
+    "success": "Mesajınız gönderildi. Bıraktığınız iletişim bilgisinden size döneceğiz.",
+    "name": "Lütfen adınızı yazın.",
+    "contact": "Lütfen geçerli bir e-posta adresi ya da telefon numarası yazın.",
+    "limit": "Mesajınız en fazla 1024 karakter olabilir.",
+    "message": "Lütfen mesajınızı yazın.",
+    "retryLabel": "Mesajı yeniden gönder",
+    "retry": "Yeniden dene",
+    "rate": "Bu internet bağlantısının günlük 5 gönderim denemesi sınırına ulaşıldı. Yarın tekrar deneyin veya e-posta ile ulaşın.",
+    "verification": "Güvenlik kontrolü tamamlanamadı. Tekrar deneyin.",
+    "unknown": "Gönderim sonucu doğrulanamadı. Mesaj ulaşmış olabilir; yeniden göndermeden önce e-posta ile ulaşın.",
+    "failure": "Mesaj gönderilemedi. Tekrar deneyin veya e-posta ile ulaşın.",
+    "fallback": "Gönderim sürmezse <a href=\"mailto:ykg@ykg.digital\">e-posta ile ulaşın</a>.",
+    "sentLabel": "Mesaj gönderildi",
+    "sent": "Gönderildi",
+    "sendLabel": "Mesajı gönder",
+    "send": "Gönder",
+    "unavailable": "Form henüz etkin değil. Şimdilik e-posta ile ulaşın.",
+    "sendingLabel": "Mesaj gönderiliyor",
+    "sending": "Mesaj gönderiliyor…",
+    "challenge": "Bir sonraki mesaj için güvenlik kontrolünü tamamlayın."
+  };
+
   const name = form.elements.namedItem("name");
   const contact = form.elements.namedItem("reply_to");
   const message = form.querySelector("textarea[data-message-field]") || form.elements.namedItem("message");
@@ -14,7 +58,7 @@
   const status = document.getElementById("contact-status");
   const fallback = document.getElementById("contact-fallback");
   const endpoint = form.dataset.endpoint.trim();
-  const successMessage = form.dataset.successMessage || "Mesajınız gönderildi. Bıraktığınız iletişim bilgisinden size döneceğiz.";
+  const successMessage = form.dataset.successMessage || words.success;
   const messagePrefix = form.dataset.messagePrefix || "";
   const security = window.YKG_FORM_SECURITY;
   const secured = window.YKG_FORM_SECURITY_CONFIG?.enabled === true;
@@ -50,10 +94,10 @@
   };
 
   const validate = () => {
-    name.setCustomValidity(name.value.trim() ? "" : "Lütfen adınızı yazın.");
-    contact.setCustomValidity(validContact(contact.value) ? "" : "Lütfen geçerli bir e-posta adresi ya da telefon numarası yazın.");
+    name.setCustomValidity(name.value.trim() ? "" : words.name);
+    contact.setCustomValidity(validContact(contact.value) ? "" : words.contact);
     message.setCustomValidity(message.value.length > messageLimit
-      ? "Mesajınız en fazla 1024 karakter olabilir." : message.value.trim() ? "" : "Lütfen mesajınızı yazın.");
+      ? words.limit : message.value.trim() ? "" : words.message);
     return form.reportValidity();
   };
 
@@ -77,18 +121,18 @@
     if (!result.ok) {
       button.classList.remove("is-animating", "is-complete");
       button.disabled = false;
-      button.setAttribute("aria-label", "Mesajı yeniden gönder");
-      label.textContent = "Yeniden dene";
+      button.setAttribute("aria-label", words.retryLabel);
+      label.textContent = words.retry;
       unlockFields();
       pending = null;
       const errorMessages = {
-        rate_limit: "Bu internet bağlantısının günlük 5 mesaj sınırına ulaşıldı. Yarın tekrar deneyin veya e-posta ile ulaşın.",
-        verification_failed: "Güvenlik kontrolü tamamlanamadı. Tekrar deneyin.",
-        delivery_unknown: "Gönderim sonucu doğrulanamadı. Mesaj ulaşmış olabilir; yeniden göndermeden önce e-posta ile ulaşın."
+        rate_limit: words.rate,
+        verification_failed: words.verification,
+        delivery_unknown: words.unknown
       };
-      setStatus(errorMessages[result.code] || "Mesaj gönderilemedi. Tekrar deneyin veya e-posta ile ulaşın.", "error");
+      setStatus(errorMessages[result.code] || words.failure, "error");
       fallback.hidden = false;
-      fallback.innerHTML = 'Gönderim sürmezse <a href="mailto:ykg@ykg.digital">e-posta ile ulaşın</a>.';
+      fallback.innerHTML = words.fallback;
       return;
     }
 
@@ -97,8 +141,8 @@
     window.setTimeout(() => {
       button.classList.remove("is-complete");
       button.disabled = true;
-      button.setAttribute("aria-label", "Mesaj gönderildi");
-      label.textContent = "Gönderildi";
+      button.setAttribute("aria-label", words.sentLabel);
+      label.textContent = words.sent;
       setStatus(successMessage, "success");
       form.reset();
       requestId.value = "";
@@ -107,8 +151,8 @@
       successTimer = window.setTimeout(() => {
         successTimer = 0;
         button.disabled = false;
-        button.setAttribute("aria-label", "Mesajı gönder");
-        label.textContent = "Gönder";
+        button.setAttribute("aria-label", words.sendLabel);
+        label.textContent = words.send;
         updateButton();
       }, 2200);
     }, 650);
@@ -144,26 +188,26 @@
       receiveResult(result);
     });
   } else if (!configured) {
-    setStatus("Form henüz etkin değil. Şimdilik e-posta ile ulaşın.", "error");
+    setStatus(words.unavailable, "error");
   }
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (pending || successTimer || !validate()) return;
     if (!configured) {
-      setStatus("Form henüz etkin değil. Şimdilik e-posta ile ulaşın.", "error");
+      setStatus(words.unavailable, "error");
       return;
     }
 
     if (!requestId.value) requestId.value = newRequestId();
     if (messagePayload !== message) messagePayload.value = `${messagePrefix}\n\n${message.value.trim()}`;
     button.disabled = true;
-    button.setAttribute("aria-label", "Mesaj gönderiliyor");
-    label.textContent = "Gönder";
+    button.setAttribute("aria-label", words.sendingLabel);
+    label.textContent = words.send;
     button.classList.add("is-animating", "is-zero");
     button.classList.remove("is-one", "is-complete");
     fallback.hidden = true;
-    setStatus("Mesaj gönderiliyor…");
+    setStatus(words.sending);
 
     pending = { id: requestId.value, startedAt: performance.now(), result: null, blinkTimer: 0, timeoutTimer: 0 };
     let phase = 0;
@@ -178,7 +222,7 @@
       if (secured) {
         const submittedId = requestId.value;
         security.submit({ name: name.value, reply_to: contact.value, message: message.value,
-          request_id: submittedId, website: form.elements.namedItem('website')?.value || '' }, () => setStatus('Bir sonraki mesaj için güvenlik kontrolünü tamamlayın.'))
+          request_id: submittedId, website: form.elements.namedItem('website')?.value || '' }, () => setStatus(words.challenge))
           .then(receiveResult).catch(error => receiveResult({ requestId: submittedId, ok: false,
             code: error.message === 'verification_failed' ? 'verification_failed' : 'delivery_unknown' }));
       } else {
@@ -198,8 +242,8 @@
         window.clearTimeout(successTimer);
         successTimer = 0;
         button.disabled = false;
-        button.setAttribute("aria-label", "Mesajı gönder");
-        label.textContent = "Gönder";
+        button.setAttribute("aria-label", words.sendLabel);
+        label.textContent = words.send;
       }
       updateMessageLimit();
       updateButton();

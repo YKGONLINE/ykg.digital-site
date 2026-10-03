@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://ykg.digital/</loc></url>
-  <url><loc>https://ykg.digital/ne-yapiyoruz.html</loc></url>
-  <url><loc>https://ykg.digital/atlas.html</loc></url>
-  <url><loc>https://ykg.digital/hakkimizda.html</loc></url>
-  <url><loc>https://ykg.digital/sapiens-4-0.html</loc></url>
-  <url><loc>https://ykg.digital/yusuf-kaan-gultas.html</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://ykg.digital/</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/" /></url>
+  <url><loc>https://ykg.digital/en/</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/" /></url>
+  <url><loc>https://ykg.digital/ne-yapiyoruz.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/ne-yapiyoruz.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/ne-yapiyoruz.html" /></url>
+  <url><loc>https://ykg.digital/en/ne-yapiyoruz.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/ne-yapiyoruz.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/ne-yapiyoruz.html" /></url>
+  <url><loc>https://ykg.digital/atlas.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/atlas.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/atlas.html" /></url>
+  <url><loc>https://ykg.digital/en/atlas.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/atlas.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/atlas.html" /></url>
+  <url><loc>https://ykg.digital/hakkimizda.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/hakkimizda.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/hakkimizda.html" /></url>
+  <url><loc>https://ykg.digital/en/hakkimizda.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/hakkimizda.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/hakkimizda.html" /></url>
+  <url><loc>https://ykg.digital/sapiens-4-0.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/sapiens-4-0.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/sapiens-4-0.html" /></url>
+  <url><loc>https://ykg.digital/en/sapiens-4-0.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/sapiens-4-0.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/sapiens-4-0.html" /></url>
+  <url><loc>https://ykg.digital/yusuf-kaan-gultas.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/yusuf-kaan-gultas.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/yusuf-kaan-gultas.html" /></url>
+  <url><loc>https://ykg.digital/en/yusuf-kaan-gultas.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/yusuf-kaan-gultas.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/yusuf-kaan-gultas.html" /></url>
+  <url><loc>https://ykg.digital/gizlilik.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/gizlilik.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/gizlilik.html" /></url>
+  <url><loc>https://ykg.digital/en/gizlilik.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/gizlilik.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/gizlilik.html" /></url>
+  <url><loc>https://ykg.digital/cerezler.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/cerezler.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/cerezler.html" /></url>
+  <url><loc>https://ykg.digital/en/cerezler.html</loc><xhtml:link rel="alternate" hreflang="tr" href="https://ykg.digital/cerezler.html" /><xhtml:link rel="alternate" hreflang="en" href="https://ykg.digital/en/cerezler.html" /></url>
 </urlset>

@@ -122,16 +122,16 @@
     intro: 'ykg.digital uses visit statistics to improve this site. Advertising tools can help reach people interested in its work. Measurement and advertising preferences are on by default. You can turn them off separately here.',
     how: 'How do we use them?', reject: 'Reject all', settings: 'Preferences', accept: 'Accept all',
     measurement: 'Measurement', measurementInfo: 'Google Analytics visit statistics.',
-    advertising: 'Advertising', advertisingInfo: 'Google Ads and Meta advertising measurement and ads relevant to your interests.',
+    advertising: 'Advertising', advertisingInfo: 'Advertising measurement and relevant ads through Google Ads and Meta, once connected.',
     save: 'Save choices', privacy: 'Privacy and Data Protection', cookies: 'Cookies and Measurement',
-    before: 'Measurement starts on your first visit, before a choice, using Google Analytics cookies. Refusing measurement stops new page-view events, removes Analytics cookies and prevents the tag from loading on subsequent pages. An already loaded tag may still send technical consent signals. Closing this panel leaves your existing setting unchanged.',
+    before: 'Measurement starts on your first visit, before you make a choice, using Google Analytics cookies. Refusing measurement stops new page-view events, removes Analytics cookies and prevents the tag from loading on subsequent pages. An already loaded tag may still send technical consent signals. Closing this panel leaves your existing setting unchanged.',
     duration: 'Analytics cookies are configured for 180 days. Your choices are remembered in this browser for 180 days. The advertising preference is on by default and can be turned off separately from measurement. It will apply to Google Ads and Meta once their connections are completed; changing this preference alone does not start advertising tracking.'
   } : {
     title: 'Gizlilik ve Ölçüm', hint: 'Gizlilik tercihleri', close: 'Paneli kapat',
     intro: 'ykg.digital, siteyi geliştirmek için ziyaret istatistiklerinden yararlanır. Reklam araçları, çalışmalarımızla ilgilenen kişilere ulaşmak için kullanılabilir. Ölçüm ve reklam tercihleri başlangıçta açıktır. İkisini buradan ayrı ayrı kapatabilirsiniz.',
     how: 'Nasıl kullanıyoruz?', reject: 'Reddet', settings: 'Tercihler', accept: 'Kabul et',
     measurement: 'Ölçüm', measurementInfo: 'Google Analytics ziyaret istatistikleri.',
-    advertising: 'Reklam', advertisingInfo: 'Google Ads ve Meta reklam ölçümü ve ilgi alanlarınıza uygun reklamlar.',
+    advertising: 'Reklam', advertisingInfo: 'Bağlantılar tamamlandığında Google Ads ve Meta üzerinden reklam ölçümü ve ilgi alanlarınıza uygun reklamlar.',
     save: 'Seçimi kaydet', privacy: 'Gizlilik ve KVKK', cookies: 'Çerez ve Ölçüm',
     before: 'Ölçüm, ilk ziyarette seçim yapmadan önce Google Analytics çerezleriyle başlar. Reddettiğinizde yeni sayfa görüntüleme olayları durur, Analytics çerezleri silinir ve sonraki sayfalarda etiket yüklenmez. Önceden yüklenmiş etiket teknik tercih sinyalleri göndermeye devam edebilir. Paneli kapatmak mevcut ayarınızı değiştirmez.',
     duration: 'Analitik çerezleri 180 gün için ayarlanmıştır. Tercihleriniz bu tarayıcıda 180 gün hatırlanır. Reklam tercihi başlangıçta açıktır; ölçümden bağımsız kapatılabilir. Google Ads ve Meta bağlantıları tamamlandığında reklam tercihiniz bu araçlarda uygulanır; bu tercihi değiştirmek tek başına reklam takibini başlatmaz.'

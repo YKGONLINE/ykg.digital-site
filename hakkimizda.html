@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="ykg.digital: çalışma biçimimiz ve geliştirdiğimiz işler." />
-    <link rel="canonical" href="https://ykg.digital/hakkimizda.html" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="ykg.digital" />
     <meta property="og:title" content="Hakkımızda · ykg.digital" />
     <meta property="og:description" content="ykg.digital: çalışma biçimimiz ve geliştirdiğimiz işler." />
-    <meta property="og:url" content="https://ykg.digital/hakkimizda.html" />
     <meta property="og:image" content="https://ykg.digital/assets/social-card.png" />
     <meta property="og:image:secure_url" content="https://ykg.digital/assets/social-card.png" />
     <meta property="og:image:type" content="image/png" />
@@ -31,7 +29,10 @@
       "@type": "WebSite",
       "url": "https://ykg.digital/",
       "name": "ykg.digital",
-      "inLanguage": "tr",
+      "inLanguage": [
+        "tr",
+        "en"
+      ],
       "publisher": {
         "@id": "https://ykg.digital/#organization"
       }
@@ -75,12 +76,20 @@
     }
   ]
 }
-    </script>
+  </script>
     <title>Hakkımızda · ykg.digital</title>
+    <link rel="canonical" href="https://ykg.digital/hakkimizda.html" />
+    <link rel="alternate" hreflang="tr" href="https://ykg.digital/hakkimizda.html" />
+    <link rel="alternate" hreflang="en" href="https://ykg.digital/en/hakkimizda.html" />
+    <link rel="alternate" hreflang="x-default" href="https://ykg.digital/hakkimizda.html" />
     <link rel="icon" type="image/png" href="assets/favicon.png" />
     <link rel="stylesheet" href="styles.css?v=34" />
     <link rel="stylesheet" href="inner.css?v=9" />
     <link rel="stylesheet" href="/consent.css?v=13" />
+      <link rel="stylesheet" href="/language.css?v=1" />
+      <meta property="og:url" content="https://ykg.digital/hakkimizda.html" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
   </head>
   <body class="inner-page">
     <div class="sky" aria-hidden="true"></div>
@@ -108,6 +117,7 @@
         <li><a href="/sapiens-4-0.html"><span class="num">04</span><span class="label">SAPIENS 4.0</span><span class="desc">İnsan ve yapay zekâ birlikte</span></a></li>
         <li><a href="/#iletisim"><span class="num">05</span><span class="label">İletişim</span><span class="desc">Bize yazın</span></a></li>
       </ol>
+      <div class="language-switch" aria-label="Dil"><a href="/hakkimizda.html" lang="tr" hreflang="tr" data-language-switch class="is-active" aria-current="true">TR</a><a href="/en/hakkimizda.html" lang="en" hreflang="en" data-language-switch>EN</a></div>
       <p class="menu-secondary"><a href="/gizlilik.html">Gizlilik ve KVKK</a></p>
       <p class="menu-mail"><a href="mailto:ykg@ykg.digital">ykg@ykg.digital</a></p>
     </nav>
@@ -127,9 +137,9 @@
     </main>
     <footer class="site-footer"><p>© 2026 ykg.digital · <a href="/gizlilik.html">Gizlilik ve KVKK</a> · <a href="/cerezler.html">Çerez ve Ölçüm</a> · <button class="cookie-settings-link" type="button" data-consent-open>Çerez tercihleri</button></p></footer>
     <script src="js/inner-sky.js?v=2" defer></script>
-    <script type="module" src="js/navigation.js?v=1"></script>
+    <script type="module" src="js/navigation.js?v=2"></script>
     <script type="module" src="js/scroll-reveal.js?v=3"></script>
     <script src="/js/tracking-config.js?v=1" defer></script>
-    <script src="/js/analytics-consent.js?v=15" defer></script>
+    <script src="/js/analytics-consent.js?v=16" defer></script>
   </body>
 </html>
