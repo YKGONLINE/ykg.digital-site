@@ -1,12 +1,17 @@
 (() => {
+  const showFallback = () => document.documentElement.classList.remove("particles-pending");
   const code = document.getElementById("error-code");
   const canvas = document.getElementById("particle-canvas");
   const context = canvas && canvas.getContext("2d", { alpha: true, desynchronized: true });
-  if (!code || !canvas || !context) return;
+  if (!code || !canvas || !context) { showFallback(); return; }
 
   const mask = document.createElement("canvas");
   const maskContext = mask.getContext("2d", { willReadFrequently: true });
-  if (!maskContext) return;
+  if (!maskContext) { showFallback(); return; }
+
+  const FORMATION_SECONDS = 3.2;
+  const MAX_DELAY_SECONDS = 0.55;
+  const BACKGROUND_SHARE = 0.6;
 
   let particles = [];
   let animationFrame = 0;
@@ -79,13 +84,21 @@
 
     particles = Array.from({ length: particleCount }, (_, index) => {
       const target = targets[index % targets.length];
-      const source = randomOffscreenPoint(viewportWidth, viewportHeight);
+      // Distribute both origins throughout the target glyphs, as in the work scenes.
+      const fromBackground = index % 5 < BACKGROUND_SHARE * 5;
+      const source = fromBackground
+        ? { x: random() * viewportWidth, y: random() * viewportHeight }
+        : randomOffscreenPoint(viewportWidth, viewportHeight);
       return {
         x: target.x,
         y: target.y,
         sourceX: source.x,
         sourceY: source.y,
-        delay: random() * 0.55,
+        sourceAlpha: 0.18 + random() * 0.3,
+        sourceRadius: 0.4 + random() * 0.4,
+        bendX: (random() - 0.5) * 130,
+        bendY: (random() - 0.5) * 130,
+        delay: random() * MAX_DELAY_SECONDS,
         radius: viewportWidth < 640 ? 0.48 + random() * 0.35 : 0.5 + random() * 0.36,
         alpha: 0.8 + random() * 0.18,
         phase: random() * Math.PI * 2,
@@ -98,7 +111,7 @@
   }
 
   function formationProgress(seconds, delay) {
-    return ease((seconds - delay) / 5.4);
+    return ease((seconds - delay) / FORMATION_SECONDS);
   }
 
   function draw(timestamp) {
@@ -106,7 +119,7 @@
     if (lastTimestamp !== null) elapsedMs += Math.min(timestamp - lastTimestamp, 80);
     lastTimestamp = timestamp;
     const seconds = elapsedMs / 1000;
-    if (elapsedMs >= 5950 && lastPaintTimestamp && timestamp - lastPaintTimestamp < 1000 / 30) {
+    if (elapsedMs >= (FORMATION_SECONDS + MAX_DELAY_SECONDS) * 1000 && lastPaintTimestamp && timestamp - lastPaintTimestamp < 1000 / 30) {
       animationFrame = window.requestAnimationFrame(draw);
       return;
     }
@@ -116,16 +129,21 @@
     for (const particle of particles) {
       const progress = formationProgress(seconds, particle.delay);
       const formed = progress >= 1;
+      const bend = Math.sin(progress * Math.PI);
       const x = particle.sourceX + (particle.x - particle.sourceX) * progress
+        + bend * particle.bendX
         + (formed ? Math.sin(seconds * 0.62 + particle.phase) * 1.15 : 0);
       const y = particle.sourceY + (particle.y - particle.sourceY) * progress
+        + bend * particle.bendY
         + (formed ? Math.cos(seconds * 0.54 + particle.phase) * 1.05 : 0);
+      const alpha = particle.sourceAlpha + (particle.alpha - particle.sourceAlpha) * progress;
+      const radius = particle.sourceRadius + (particle.radius - particle.sourceRadius) * progress;
       const shimmer = formed
         ? 0.97 + Math.sin(seconds * 0.72 + particle.phase) * 0.055
         : 0.9 + Math.sin(seconds * 0.42 + particle.phase) * 0.06;
       context.beginPath();
-      context.fillStyle = `rgba(248, 248, 248, ${(particle.alpha * shimmer).toFixed(3)})`;
-      context.arc(x, y, particle.radius, 0, Math.PI * 2);
+      context.fillStyle = `rgba(248, 248, 248, ${(alpha * shimmer).toFixed(3)})`;
+      context.arc(x, y, radius, 0, Math.PI * 2);
       context.fill();
     }
 
@@ -160,7 +178,8 @@
 
   function initialize() {
     resizeAndRebuild();
-    if (!particles.length) return;
+    if (!particles.length) { showFallback(); return; }
+    document.documentElement.classList.remove("particles-pending");
 
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver((entries) => {
@@ -178,6 +197,8 @@
     syncAnimation();
   }
 
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(initialize);
-  else initialize();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(initialize).catch(showFallback);
+  else {
+    try { initialize(); } catch { showFallback(); }
+  }
 })();
