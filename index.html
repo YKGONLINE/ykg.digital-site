@@ -202,17 +202,18 @@
             </label>
             <label class="contact-field">Mesajınız
               <span class="message-box">
-                <textarea name="message" rows="6" maxlength="5000" required aria-label="Mesajınız" placeholder="Aklınızdakini anlatın"></textarea>
+                <textarea name="message" rows="6" maxlength="1024" aria-describedby="message-limit-help" required aria-label="Mesajınız" placeholder="Aklınızdakini anlatın"></textarea>
                 <button class="send-button" type="submit" aria-label="Mesajı gönder" aria-hidden="true" tabindex="-1">
                   <span class="send-label">Gönder</span>
                   <span class="send-arrow" aria-hidden="true">↗</span>
                   <span class="send-bits" aria-hidden="true"><span class="send-bit">0</span><span class="send-bit">1</span></span>
                 </button>
               </span>
+              <span class="field-help" id="message-limit-help" role="status" aria-live="polite" hidden>1024 karakter sınırına ulaştınız.</span>
             </label>
             <input type="hidden" name="request_id" value="" />
             <div class="contact-trap" aria-hidden="true"><label>Bu alanı boş bırakın <input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
-            <p class="form-privacy">Formda paylaştığınız ad, iletişim bilgisi ve mesajınız talebinizi değerlendirmek ve size dönüş yapmak için Google hizmetleri üzerinden işlenir. <a href="/gizlilik.html#iletisim-formu">Gizlilik bilgileri</a>.</p>
+            <p class="form-privacy">Formda paylaştığınız ad, iletişim bilgisi ve mesajınız talebinizi değerlendirmek ve size dönüş yapmak için Cloudflare ve Google hizmetleri üzerinden işlenir. <a href="/gizlilik.html#iletisim-formu">Gizlilik bilgileri</a>.</p>
             <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
           </form>
         </section>
@@ -227,7 +228,9 @@
     <script type="module" src="js/main.js?v=17"></script>
     <script type="module" src="js/site.js?v=22"></script>
     <script type="module" src="js/scroll-reveal.js?v=3"></script>
-    <script src="js/contact-animation.js?v=5" defer></script>
+    <script src="js/form-security-config.js?v=1" defer></script>
+    <script src="js/form-security.js?v=2" defer></script>
+    <script src="js/contact-animation.js?v=7" defer></script>
     <script src="/js/tracking-config.js?v=1" defer></script>
     <script src="/js/analytics-consent.js?v=15" defer></script>
   </body>

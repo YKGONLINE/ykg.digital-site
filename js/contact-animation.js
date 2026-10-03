@@ -6,6 +6,8 @@
   const contact = form.elements.namedItem("reply_to");
   const message = form.querySelector("textarea[data-message-field]") || form.elements.namedItem("message");
   const messagePayload = form.elements.namedItem("message");
+  const messageLimit = 1024;
+  const limitHelp = document.getElementById("message-limit-help");
   const requestId = form.elements.namedItem("request_id");
   const button = form.querySelector(".send-button");
   const label = button.querySelector(".send-label");
@@ -14,7 +16,9 @@
   const endpoint = form.dataset.endpoint.trim();
   const successMessage = form.dataset.successMessage || "Mesajınız gönderildi. Bıraktığınız iletişim bilgisinden size döneceğiz.";
   const messagePrefix = form.dataset.messagePrefix || "";
-  const configured = /^https:\/\/script\.google\.com\/(?:macros\/s|a\/macros\/ykg\.digital\/s)\/[A-Za-z0-9_-]+\/exec$/.test(endpoint);
+  const security = window.YKG_FORM_SECURITY;
+  const secured = window.YKG_FORM_SECURITY_CONFIG?.enabled === true;
+  const configured = secured ? security?.configured === true : /^https:\/\/script\.google\.com\/(?:macros\/s|a\/macros\/ykg\.digital\/s)\/[A-Za-z0-9_-]+\/exec$/.test(endpoint);
   const minimumAnimationMs = 2400;
   let pending = null;
   let successTimer = 0;
@@ -41,10 +45,15 @@
     button.tabIndex = hasMessage ? 0 : -1;
   };
 
+  const updateMessageLimit = () => {
+    if (limitHelp) limitHelp.hidden = message.value.length < messageLimit;
+  };
+
   const validate = () => {
     name.setCustomValidity(name.value.trim() ? "" : "Lütfen adınızı yazın.");
     contact.setCustomValidity(validContact(contact.value) ? "" : "Lütfen geçerli bir e-posta adresi ya da telefon numarası yazın.");
-    message.setCustomValidity(message.value.trim() ? "" : "Lütfen mesajınızı yazın.");
+    message.setCustomValidity(message.value.length > messageLimit
+      ? "Mesajınız en fazla 1024 karakter olabilir." : message.value.trim() ? "" : "Lütfen mesajınızı yazın.");
     return form.reportValidity();
   };
 
@@ -60,6 +69,7 @@
 
   const finish = (result) => {
     if (!pending) return;
+    if (secured) security.reset();
     window.clearInterval(pending.blinkTimer);
     window.clearTimeout(pending.timeoutTimer);
     button.classList.remove("is-zero", "is-one");
@@ -71,7 +81,12 @@
       label.textContent = "Yeniden dene";
       unlockFields();
       pending = null;
-      setStatus("Mesaj gönderilemedi. Tekrar deneyin veya e-posta ile ulaşın.", "error");
+      const errorMessages = {
+        rate_limit: "Bu internet bağlantısının günlük 5 mesaj sınırına ulaşıldı. Yarın tekrar deneyin veya e-posta ile ulaşın.",
+        verification_failed: "Güvenlik kontrolü tamamlanamadı. Tekrar deneyin.",
+        delivery_unknown: "Gönderim sonucu doğrulanamadı. Mesaj ulaşmış olabilir; yeniden göndermeden önce e-posta ile ulaşın."
+      };
+      setStatus(errorMessages[result.code] || "Mesaj gönderilemedi. Tekrar deneyin veya e-posta ile ulaşın.", "error");
       fallback.hidden = false;
       fallback.innerHTML = 'Gönderim sürmezse <a href="mailto:ykg@ykg.digital">e-posta ile ulaşın</a>.';
       return;
@@ -100,13 +115,15 @@
   };
 
   const receiveResult = (result) => {
-    if (!pending || pending.result) return;
+    if (!pending || pending.result || (result.requestId && result.requestId !== pending.id)) return;
     pending.result = result;
     const wait = Math.max(0, minimumAnimationMs - (performance.now() - pending.startedAt));
     window.setTimeout(() => finish(result), wait);
   };
 
-  if (configured) {
+  if (configured) { fallback.hidden = true; setStatus(""); }
+
+  if (configured && !secured) {
     const frame = document.createElement("iframe");
     frame.name = "ykg-contact-response";
     frame.hidden = true;
@@ -126,11 +143,11 @@
         || result.requestId !== pending.id || typeof result.ok !== "boolean") return;
       receiveResult(result);
     });
-  } else {
+  } else if (!configured) {
     setStatus("Form henüz etkin değil. Şimdilik e-posta ile ulaşın.", "error");
   }
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (pending || successTimer || !validate()) return;
     if (!configured) {
@@ -155,10 +172,18 @@
       button.classList.toggle("is-zero", phase % 2 === 0);
       button.classList.toggle("is-one", phase % 2 === 1);
     }, 300);
-    pending.timeoutTimer = window.setTimeout(() => receiveResult({ ok: false }), 30000);
+    pending.timeoutTimer = window.setTimeout(() => receiveResult({ ok: false, code: "delivery_unknown" }), secured ? 195000 : 30000);
 
     try {
-      HTMLFormElement.prototype.submit.call(form);
+      if (secured) {
+        const submittedId = requestId.value;
+        security.submit({ name: name.value, reply_to: contact.value, message: message.value,
+          request_id: submittedId, website: form.elements.namedItem('website')?.value || '' }, () => setStatus('Bir sonraki mesaj için güvenlik kontrolünü tamamlayın.'))
+          .then(receiveResult).catch(error => receiveResult({ requestId: submittedId, ok: false,
+            code: error.message === 'verification_failed' ? 'verification_failed' : 'delivery_unknown' }));
+      } else {
+        HTMLFormElement.prototype.submit.call(form);
+      }
       [name, contact, message].forEach((field) => { field.readOnly = true; });
     } catch (_) {
       receiveResult({ ok: false });
@@ -176,10 +201,16 @@
         button.setAttribute("aria-label", "Mesajı gönder");
         label.textContent = "Gönder";
       }
+      updateMessageLimit();
       updateButton();
     });
   });
 
+  form.addEventListener("reset", () => {
+    queueMicrotask(updateMessageLimit);
+  });
+
   // Restored textarea values can be present before an input event fires.
+  updateMessageLimit();
   updateButton();
 })();
