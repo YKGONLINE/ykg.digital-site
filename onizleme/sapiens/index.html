@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>SAPIENS 4.0 — Önizleme</title>
+  <link rel="stylesheet" href="style.css?v=20261003-flow1">
+  <script>document.documentElement.classList.add('js');</script>
+  <script type="importmap">{"imports":{"three":"./vendor/three/three.module.js"}}</script>
+</head>
+<body>
+  <canvas id="stage" role="img" aria-label="Taşı kavrayan el; tarla; makine; açık el ve sinir ağı. Aynı parçacıklar dört kompozisyon arasında kesintisiz dönüşür."></canvas>
+  <div class="fallback"><img src="assets/08-ag.webp" alt="Açık bir el ile ona bağlı sinir ağı"></div>
+  <p id="status" role="status" hidden></p>
+  <nav id="controls" aria-label="Animasyon kontrolleri" hidden>
+    <button id="toggle" type="button">Duraklat</button>
+    <button id="replay" type="button">Yeniden oynat</button>
+    <section id="inspection" aria-label="Kare incelemesi" hidden>
+      <div class="time"><output id="clock">0.00</output><span id="duration"></span></div>
+      <input id="time" type="range" min="0" max="24" step="0.01" value="0" aria-label="Zaman">
+      <div class="poses">
+        <button data-pose="0">Taş</button><button data-pose="1">Tarım</button>
+        <button data-pose="2">Makine</button><button data-pose="3">Ağ</button>
+      </div>
+      <p id="metrics"></p>
+    </section>
+  </nav>
+  <script type="module" src="scene.js?v=20261003-flow1"></script>
+</body>
+</html>
