@@ -4,10 +4,14 @@
   const title = document.querySelector('.atlas-title');
   const logo = document.querySelector('.atlas-wordmark-fallback');
   const ctx = canvas?.getContext('2d', { alpha: true });
-  if (!ctx || !title || !logo) return;
+  if (!ctx || !title || !logo) {
+    document.documentElement.classList.remove('atlas-motion');
+    return;
+  }
+  title.classList.add('is-forming');
 
-  // The high-DPI still and moving particles share the original SVG coordinates:
-  // neither random thinning nor a different silhouette at the image handover.
+  // Forming, resting and dispersal retain the same SVG points on one canvas.
+  // The image is only a fallback when animation cannot initialize.
   fetch(logo.dataset.points).then(response => {
     if (!response.ok) throw new Error('Wordmark unavailable');
     return response.text();
@@ -29,9 +33,9 @@
       exitX: normal() * .65, exitY: normal() * .65,
       exitDelay: random() * 1.5, exitDuration: 1.9 + random() * 1.5,
     }));
-    if (!particles.length) return;
+    if (!particles.length) throw new Error('Wordmark has no particles');
     let width, height, frame = 0, previous = 0, elapsed = 0, visible = false, wasResting = false;
-    let restTimer = 0, restStarted = 0, restEnd = 0, settledState = null;
+    let restTimer = 0, restStarted = 0, restEnd = 0;
     const clamp = t => Math.max(0, Math.min(1, t));
     const smooth = t => { const u = clamp(t); return u * u * (3 - 2 * u); };
     const bezier = (a, b, c, d, u) => {
@@ -39,20 +43,34 @@
       return v * v * v * a + 3 * v * v * u * b + 3 * v * u * u * c + u * u * u * d;
     };
     const fit = () => {
-      width = innerWidth; height = innerHeight;
+      // Fixed canvas CSS bounds exclude the scrollbar; innerWidth can include it.
+      // Use the visible surface to keep one canvas pixel aligned to one CSS pixel.
+      const surface = canvas.getBoundingClientRect();
+      width = surface.width; height = surface.height;
       const ratio = Math.min(devicePixelRatio || 1, 2);
       canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      if (wasResting && visible && !document.hidden) drawSettled();
     };
     const clear = () => ctx.clearRect(0, 0, width, height);
-    const settled = value => {
-      if (settledState === value) return;
-      settledState = value;
-      title.classList.toggle('is-settled', value);
-      canvas.hidden = value;
-      // fit uses viewport dimensions, so restoring a display:none canvas never
-      // inherits zero layout bounds or stale dimensions after a resize.
-      if (!value) fit();
+    const drawSettled = () => {
+      const bounds = title.getBoundingClientRect();
+      const radius = 2 * bounds.width / 1390;
+      clear();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#eef1f0';
+      for (const p of particles) {
+        ctx.beginPath();
+        ctx.arc(bounds.left + p.x * bounds.width, bounds.top + p.y * bounds.height, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    };
+    const repaintRest = () => {
+      if (!wasResting || !visible || document.hidden || frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        if (wasResting && visible && !document.hidden) drawSettled();
+      });
     };
     const stop = () => {
       cancelAnimationFrame(frame);
@@ -63,7 +81,7 @@
         clearTimeout(restTimer);
         restTimer = 0;
       }
-      if (!wasResting) clear();
+      clear();
     };
     const render = stamp => {
       frame = 0;
@@ -72,12 +90,11 @@
       previous = stamp;
       const t = elapsed % 22;
       const resting = t >= 5 && t < 17;
-      settled(resting);
-      if (!resting || !wasResting) clear();
       wasResting = resting;
       if (resting) {
-        // The static image owns this phase. No rAF, canvas repaint, or DOM writes
-        // until dispersal; visibility changes freeze this remaining wait.
+        // Keep the exact final geometry instead of handing over to a PNG.
+        // Idle time uses a timer; only scroll and resize repaint the still.
+        drawSettled();
         previous = 0;
         restStarted = performance.now();
         restEnd = Math.floor(elapsed / 22) * 22 + 17;
@@ -89,6 +106,7 @@
         return;
       }
       if (!resting) {
+        clear();
         const bounds = title.getBoundingClientRect();
         const radius = 2 * bounds.width / 1390;
         ctx.fillStyle = '#eef1f0';
@@ -127,10 +145,11 @@
     };
     fit();
     addEventListener('resize', fit, { passive: true });
+    addEventListener('scroll', repaintRest, { passive: true });
     document.addEventListener('visibilitychange', sync);
     addEventListener('pagehide', stop); addEventListener('pageshow', sync);
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }, { threshold: .05 }).observe(title);
     } else { visible = true; sync(); }
-  }).catch(() => { /* The static image stays visible if animation cannot initialize. */ });
+  }).catch(() => { document.documentElement.classList.remove('atlas-motion'); });
 })();

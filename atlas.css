@@ -71,7 +71,7 @@ main { max-width: 1440px; margin: auto; padding: 85px clamp(24px, 9.5vw, 146px) 
 .eyebrow { margin: 0 0 40px; }
 h1.atlas-title { position: relative; width: min(100%, 680px); aspect-ratio: 1390 / 320; margin: 0 0 60px; }
 .atlas-wordmark-fallback { display: block; width: 100%; height: 100%; }
-.atlas-title.is-forming:not(.is-settled) .atlas-wordmark-fallback { visibility: hidden; }
+html.atlas-motion .atlas-wordmark-fallback { visibility: hidden; }
 p { margin: 0 0 1.65em; }
 .lead { max-width: 760px; font-size: clamp(22px, 2.05vw, 29px); line-height: 1.55; letter-spacing: -.025em; }
 .intro > p:last-child { max-width: 660px; }
