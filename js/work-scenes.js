@@ -132,7 +132,9 @@
     d.rect(258,100,84,88,.64,8);d.line([[258,117],[342,117]],.45);
     [268,276,284].forEach(x=>d.circle(x,109,1.8,.55));
     d.line([[271,132],[329,132]],.46);d.line([[271,151],[329,151]],.46);d.line([[271,170],[309,170]],.46);
-    d.person(475,127,.54,.9);d.person(505,103,.7,1);d.person(535,127,.54,.9);
+    // Keep a small gap: the middle figure ends at y=137, while the message
+    // sphere starts at y=143. The route and timing stay unchanged.
+    d.person(475,141,.54,.9);d.person(505,117,.7,1);d.person(535,141,.54,.9);
     paths.brand.forEach(route=>d.route(route));d.arrow(230,140);d.arrow(455,155);
     if(c<1){d.packet(100,140,t,ease(c/.4));d.setStage(0);}
     else if(c<3.6){const p=d.travel(paths.brand[0],(c-1)/2.6);d.packet(p.x,p.y,t);d.setStage(c<2.6?0:1);}
